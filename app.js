@@ -10,13 +10,13 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var chatsRouter = require('./routes/chats');
+var quotesRouter = require('./routes/quotes');
 
 var app = express();
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 var port = process.env.port || 3000
-console.log(port)
 app.listen(port, () => console.log(`listening on port ${port}!`))
 
 // view engine setup
@@ -32,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/chat', chatsRouter);
+app.use('/quotes', quotesRouter);
 
 
 // catch 404 and forward to error handler

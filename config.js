@@ -5,6 +5,7 @@ config.authKey = "FAtkho7iQAq7CvuArBfpOb9MD1ByFCVPEIkUpRp8NCtN3N0cGptD8xANihUYYp
 config.databaseId = "botdocs";
 config.containerUserId = "users";
 config.containerChatHistoryId = "chatHistory";
+config.containerLoadingScreenQuotesId = "loadScreenQuotes";
 
 
 module.exports = config;
