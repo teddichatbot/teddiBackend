@@ -53,4 +53,18 @@ router.get('/getAllQuotes', (req,res)=>{
   })
 })
 
+
+router.get('/motivationalMessages', (req,res)=>{
+  quoteslist.getAllQuotes(req, res).then(getData=>{
+    var respVal = getData[Math.floor(Math.random() * getData.length)];
+    res.status(200).json({
+      status:200,
+      quotesData: respVal
+    })
+  })
+  .catch(err =>{
+    res.json(err)
+  })
+})
+
 module.exports = router;
