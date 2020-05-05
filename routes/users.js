@@ -164,4 +164,39 @@ router.post('/addUser', [
   }
 })
 
+router.post('/forgotpassword',[
+  check('email').isEmail().withMessage('Invalid Email Id')
+], (req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+
+  userList.checkEmail(req, res).then(async(getData)=>{
+    // res.json(data)
+    if(getData.length>0){
+      userList.forgotPassword(getData[0].id).then(data =>{
+        res.status(200).json({
+          status:200,
+          msg:'New password send to your email id'
+        })
+      })
+      .catch(err=>{
+        res.json(err)
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'please check your email id'
+      })
+    }
+  })
+  .catch(err => {
+    res.json(err)
+  })
+})
+
 module.exports = router;

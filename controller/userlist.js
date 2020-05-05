@@ -23,6 +23,11 @@ const UserDao = require("../models/userDao");
     return data;
   }
 
+  async forgotPassword(itemId) {
+    var data = await this.userDao.forgotPassword(itemId);
+    return data;
+  }
+
    async checkEmail(req, res) {
     const querySpec = {
       query: "SELECT * FROM users u WHERE u.email = '"+req.body.email+"'"

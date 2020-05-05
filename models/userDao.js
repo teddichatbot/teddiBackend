@@ -1,3 +1,6 @@
+var passwordHash = require('password-hash');
+var nodemailer = require('nodemailer');
+
 // @ts-check
 const CosmosClient = require('@azure/cosmos').CosmosClient
 
@@ -82,6 +85,68 @@ class UserDao {
       .item(itemId, partitionKey)
       .replace(doc)
     return replaced
+  }
+
+  async forgotPassword(itemId) {
+    const doc = await this.getItem(itemId)
+    var newPasskey = await this.generatePasskey(6);
+    // console.log('newPasskey',newPasskey)
+    doc.password = passwordHash.generate(newPasskey);
+
+    // var transporter = nodemailer.createTransport({
+    //     // host: 'mail.lcn.com',
+    //     host: 'smtp.gmail.com',
+    //     port: 587,
+    //     secure: false,
+    //     // service: 'gmail',
+    //     auth: {
+    //         user: 'subhankar.ray@capitalnumbers.com',
+    //         pass: '$Ubha12345CN'
+    //     }
+    // });
+    var transporter = nodemailer.createTransport({
+      host: "smtp-mail.outlook.com", // hostname
+      secureConnection: false, // TLS requires secureConnection to be false
+      port: 587, // port for secure SMTP
+      tls: {
+        ciphers:'SSLv3'
+      },
+      auth: {
+          user: 'teddi@solutions4health.co.uk',
+          pass: 'We11ted!x'
+      }
+    });
+
+    var mailOptions = {
+      from: '"support@teddi.com" <teddi@solutions4health.co.uk>',
+      to: doc.email,
+      subject: 'Teddi: Forgot Password!',
+      // html: '<p>Dear '+userName+',</p><p>Your new password is: '+newPasskey+'</p><p>Thanks and Regards,</p><p>Team Bella</p>',
+      html: '<p>Your new password is: '+newPasskey+'</p><p>Thanks and Regards,</p><p>Team Teddi</p>',
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log("error: Unable to send email.", error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    
+
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async generatePasskey(length){
+    var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var result = '';
+    for (var i = length; i > 0; --i){
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
   }
 
   async getItem(itemId) {
