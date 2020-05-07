@@ -140,6 +140,16 @@ class UserDao {
     return replaced
   }
 
+  async resetPassword(itemId,newPassword) {
+    const doc = await this.getItem(itemId)
+    doc.password = passwordHash.generate(newPassword);
+    
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
   async generatePasskey(length){
     var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var result = '';

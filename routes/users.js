@@ -199,4 +199,50 @@ router.post('/forgotpassword',[
   })
 })
 
+router.post('/resetPassword',[
+  check('email').isEmail().withMessage('Invalid Email Id'),
+  check('oldPassword','Old Password is required').not().isEmpty(),
+  check('newPassword','New Password is required').not().isEmpty()
+], (req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  //check user's mail
+  userList.checkEmail(req, res).then(async(getData)=>{
+    if(getData.length>0){
+      //check old password
+      if(passwordHash.verify(req.body.oldPassword, getData[0].password)){
+        //reset password
+        userList.resetPassword(getData[0].id, req.body.newPassword).then(data =>{
+          res.status(200).json({
+            status:200,
+            msg:'Password reset successfully'
+          })
+        })
+        .catch(err=>{
+          res.json(err)
+        })
+      }else{
+        res.status(400).json({
+          status:400,
+          msg:'Password not matched'
+        })
+      }
+      
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'please check your email id'
+      })
+    }
+  })
+  .catch(err => {
+    res.json(err)
+  })
+})
+
 module.exports = router;
