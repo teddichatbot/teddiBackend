@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var chatsRouter = require('./routes/chats');
 var quotesRouter = require('./routes/quotes');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 app.use(cors())
@@ -33,6 +34,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/chat', chatsRouter);
 app.use('/quotes', quotesRouter);
+app.use('/admin', adminRouter);
 
 
 // catch 404 and forward to error handler

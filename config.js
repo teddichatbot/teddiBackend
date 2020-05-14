@@ -6,6 +6,7 @@ config.databaseId = "botdocs";
 config.containerUserId = "users";
 config.containerChatHistoryId = "chatHistory";
 config.containerLoadingScreenQuotesId = "loadScreenQuotes";
+config.containerAdminId = "admin";
 
 
 module.exports = config;
