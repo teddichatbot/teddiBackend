@@ -55,8 +55,7 @@ adminDao
   ], (req,res)=>{
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(422).json({ 
-        status:422,
+      return res.status(422).send({ 
         errors: errors.array() 
       })
     }
@@ -64,27 +63,24 @@ adminDao
     // let msg = null;
       if(getData.length>0){
         if(passwordHash.verify(req.body.password, getData[0].password)){
-          res.status(200).json({
-            status:200,
+          res.status(200).send({
             msg:'Login Successfully',
             userData: getData
           })
         }else{
-          res.status(400).json({
-            status:400,
-            msg:'Password not matched',
+          res.status(400).send({
+            msg:'Password not matched1',
           })
         }
         
       }else{
-        res.status(400).json({
-          status:400,
+        res.status(400).send({
           msg:'Username not matched. please try again'
         })
       }
     })
     .catch(err => {
-      res.json(err)
+      res.send(err)
     })
   })
 
