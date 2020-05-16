@@ -61,7 +61,7 @@ adminDao
       })
     }
     adminlist.checkUserName(req, res).then(getData=>{
-    //   res.json(data)
+    // let msg = null;
       if(getData.length>0){
         if(passwordHash.verify(req.body.password, getData[0].password)){
           res.status(200).json({
@@ -72,7 +72,7 @@ adminDao
         }else{
           res.status(400).json({
             status:400,
-            msg:'Password not matched'
+            msg:'Password not matched',
           })
         }
         
