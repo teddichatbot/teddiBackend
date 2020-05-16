@@ -72,7 +72,7 @@ adminDao
         }else{
           res.status(400).json({
             status:400,
-            msg:'Password not matched1',
+            msg:'Password not matched. Please try again',
           })
         }
         
