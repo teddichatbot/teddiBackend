@@ -16,6 +16,16 @@ const ChatDao = require("../models/chatDao");
     return data;
    }
 
+   async chatHistory(req, res) {
+    var sql = 'SELECT * FROM chatHistory ch WHERE ch.conversationId = "'+req.body.conversationId+'" AND ch.chapterType = "'+req.body.chapterType+'" ORDER BY ch._ts OFFSET '+req.body.offset+' LIMIT '+req.body.limit ;
+ 
+    const querySpec = {
+      query: sql
+    };
+    const items = await this.chatDao.find(querySpec);
+    return items
+  }
+
  }
 
  module.exports = ChatList;

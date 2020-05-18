@@ -34,6 +34,7 @@ class UserDao {
     if (!this.container) {
       throw new Error('Collection is not initialized.')
     }
+    
     const { resources } = await this.container.items.query(querySpec).fetchAll()
     return resources
   }

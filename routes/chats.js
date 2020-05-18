@@ -42,6 +42,32 @@ router.post('/saveChat', async(req, res) => {
   })
 })
 
+router.post('/chatHistory',[
+  check('conversationId','Conversation Id is required').not().isEmpty(),
+  check('chapterType','Chapter Type is required').not().isEmpty(),
+  check('offset','Offset is required').not().isEmpty(),
+  check('limit','Limit Id is required').not().isEmpty()
+], async(req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+    
+  chatList.chatHistory(req, res).then(getData=>{
+    res.status(200).json({
+      status:200,
+      msg:'Save chat Successfully',
+      chatData: getData
+    })
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
+})
+
 
 
 module.exports = router;
