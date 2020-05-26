@@ -17,7 +17,7 @@ const ChatDao = require("../models/chatDao");
    }
 
    async chatHistory(req, res) {
-    var sql = 'SELECT * FROM chatHistory ch WHERE ch.conversationId = "'+req.body.conversationId+'" AND ch.chapterType = "'+req.body.chapterType+'" ORDER BY ch._ts OFFSET '+req.body.offset+' LIMIT '+req.body.limit ;
+    var sql = 'SELECT * FROM chatHistory ch WHERE ch.conversationId = "'+req.body.conversationId+'" AND ch.chapterType = "'+req.body.chapterType+'" ORDER BY ch._ts DESC OFFSET '+req.body.offset+' LIMIT '+req.body.limit ;
  
     const querySpec = {
       query: sql
