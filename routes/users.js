@@ -271,6 +271,36 @@ router.post('/setName', async(req, res)=>{
   }
 })
 
+router.get('/getSingleUser',[
+  check('conversationId','Conversation Id is required').not().isEmpty()
+], async(req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+
+  try{
+    var userData = await userList.checkConversationId(req, res);
+    if(userData.length>0){
+      res.status(200).json({
+        status:200,
+        userData: userData[0]
+      })
+      
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'Invalid Conversation Id'
+      })
+    }
+  }catch(err){
+    res.json(err)
+  }
+})
+
 router
 
 module.exports = router;
