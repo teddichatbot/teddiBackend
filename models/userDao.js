@@ -48,6 +48,8 @@ class UserDao {
     item.convEndDate = dateNow.getDate() +"-"+ (dateNow.getMonth() + 1) +"-"+ dateNow.getFullYear()
     item.convEndTime = Date.now()
     item.registerCompleted = false
+    item.firstName = ''
+    item.lastName = ''
     item.email = ''
     item.password = ''
     item.child_dob = ''
@@ -162,6 +164,17 @@ class UserDao {
   async getItem(itemId) {
     const { resource } = await this.container.item(itemId, partitionKey).read()
     return resource
+  }
+
+  async setName(itemId, fname, lname) {
+    const doc = await this.getItem(itemId)
+    doc.firstName = fname;
+    doc.lastName = lname;
+    
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
   }
 }
 

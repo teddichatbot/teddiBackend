@@ -51,6 +51,11 @@ const UserDao = require("../models/userDao");
     return items
   }
 
+  async setName(itemId, fname, lname) {
+    var data = await this.userDao.setName(itemId,fname,lname);
+    return data;
+  }
+
  }
 
  module.exports = UserList;

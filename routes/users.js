@@ -245,4 +245,32 @@ router.post('/resetPassword',[
   })
 })
 
+router.post('/setName', async(req, res)=>{
+  try{
+    var userData = await userList.checkConversationId(req, res);
+    if(userData.length>0){
+      // req.body.id = userData[0].id;
+      userList.setName(userData[0].id, req.body.fname, req.body.lname).then(async(getData)=>{
+        res.status(200).json({
+          status:200,
+          msg:'Saved Full Name'
+        })
+      })
+      .catch(err => {
+        res.json(err)
+      })
+      
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'Invalid Conversation Id'
+      })
+    }
+  }catch(err){
+    res.json(err)
+  }
+})
+
+router
+
 module.exports = router;
