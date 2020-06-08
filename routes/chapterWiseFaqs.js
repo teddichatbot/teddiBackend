@@ -59,7 +59,7 @@ router.post('/checkFaq',[
     if(getData.length > 0){
       res.status(200).json({
         status:200,
-        chatData: getData[0]
+        data: getData[0]
       })
     }else{
       res.status(400).json({
