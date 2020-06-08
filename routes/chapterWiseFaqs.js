@@ -4,14 +4,14 @@ const { check, validationResult } = require('express-validator');
 // cosmos
 const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
-const ChatList = require('../controller/chatlist')
-const ChatDao = require('../models/chatDao')
+const Chapterwisefaqlist = require('../controller/chapterwisefaqlist')
+const ChapterWiseFaqDao = require('../models/chapterWiseFAQDao')
 
 //Todo App:
-const chatDao = new ChatDao(cosmosClient, config.databaseId, config.containerChatHistoryId)
-const chatList = new ChatList(chatDao)
+const chapterWiseFaqDao = new ChapterWiseFaqDao(cosmosClient, config.databaseId, config.containerChapterWiseFaqId)
+const chapterwisefaqlist = new Chapterwisefaqlist(chapterWiseFaqDao)
 
-chatDao
+chapterWiseFaqDao
   .init(err => {
     console.error(err)
   })
@@ -28,13 +28,15 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post('/saveChat', async(req, res) => {
-    
-  chatList.saveChat(req, res).then(addData=>{
+router.post('/addChapterWiseFaq', [
+    check('faq','FAQ is required').not().isEmpty(),
+    check('answer',"FAQ's answer is required").not().isEmpty(),
+    check('chapterName','Chapter Name is required').not().isEmpty(),
+  ],async(req, res) => {
+  chapterwisefaqlist.addChapterWiseFaq(req, res).then(addData=>{
     res.status(200).json({
       status:200,
-      msg:'Save chat Successfully',
-      chatData: addData
+      data: addData
     })
   })
   .catch(err =>{
@@ -42,11 +44,8 @@ router.post('/saveChat', async(req, res) => {
   })
 })
 
-router.post('/chatHistory',[
-  check('conversationId','Conversation Id is required').not().isEmpty(),
-  check('chapterType','Chapter Type is required').not().isEmpty(),
-  check('offset','Offset is required').not().isEmpty(),
-  check('limit','Limit Id is required').not().isEmpty()
+router.post('/checkFaq',[
+  check('faq','FAQ is required').not().isEmpty(),
 ], async(req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -56,10 +55,10 @@ router.post('/chatHistory',[
     })
   }
     
-  chatList.chatHistory(req, res).then(getData=>{
+  chapterwisefaqlist.checkFaq(req, res).then(getData=>{
     res.status(200).json({
       status:200,
-      chatData: getData
+      chatData: getData[0]
     })
   })
   .catch(err =>{
