@@ -56,10 +56,18 @@ router.post('/checkFaq',[
   }
     
   chapterwisefaqlist.checkFaq(req, res).then(getData=>{
-    res.status(200).json({
-      status:200,
-      chatData: getData[0]
-    })
+    if(getData.length > 0){
+      res.status(200).json({
+        status:200,
+        chatData: getData[0]
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg: 'no data found'
+      })
+    }
+    
   })
   .catch(err =>{
     res.status(500).json(err)
