@@ -74,6 +74,33 @@ router.post('/checkFaq',[
   })
 })
 
+router.put('/updateChapterwiseFaq', [
+  check('faqId','FAQ id is required').not().isEmpty(),
+  check('faq','FAQ is required').not().isEmpty(),
+  check('answer',"FAQ's answer is required").not().isEmpty(),
+  check('chapterName','Chapter Name is required').not().isEmpty(),
+] , (req, res)=>{
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+
+  chapterwisefaqlist.updateChapterWiseFaq(req.body).then(getData=>{
+    res.status(200).json({
+      status:200,
+      msg: 'updated successfuly'
+    })
+    
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
+})
+
 
 
 module.exports = router;

@@ -43,6 +43,23 @@ class chapterWiseFaqDao {
     const { resource: doc } = await this.container.items.create(item)
     return doc
   }
+
+  async updateItem(itemId,payload) {
+    const doc = await this.getItem(itemId)
+    doc.faq = payload.faq;
+    doc.answer = payload.answer;
+    doc.chapterName = payload.chapterName;
+    
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async getItem(itemId) {
+    const { resource } = await this.container.item(itemId, partitionKey).read()
+    return resource
+  }
 }
 
 module.exports = chapterWiseFaqDao

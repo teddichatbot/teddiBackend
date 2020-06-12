@@ -16,16 +16,20 @@ const ChapterWiseFaqDao = require("../models/chapterWiseFAQDao");
       return data;
     }
 
-   async checkFaq(req, res) {
-    // var sql = 'SELECT * FROM chapterFaq cf WHERE cf.faq = "'+req.body.faq+'"' ;
-    var sql = 'SELECT * FROM chapterFaq cf WHERE ARRAY_CONTAINS (cf.faq, "'+req.body.faq+'")' ;
- 
-    const querySpec = {
-      query: sql
-    };
-    const items = await this.chapterWiseFaqDao.find(querySpec);
-    return items
-  }
+    async checkFaq(req, res) {
+      // var sql = 'SELECT * FROM chapterFaq cf WHERE cf.faq = "'+req.body.faq+'"' ;
+      var sql = 'SELECT * FROM chapterFaq cf WHERE ARRAY_CONTAINS (cf.faq, "'+req.body.faq+'")' ;
+  
+      const querySpec = {
+        query: sql
+      };
+      const items = await this.chapterWiseFaqDao.find(querySpec);
+      return items
+    }
+    async updateChapterWiseFaq(payload) {
+      var data = await this.chapterWiseFaqDao.updateItem(payload.faqId, payload);
+      return data;
+    }
 
  }
 
