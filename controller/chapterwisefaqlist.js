@@ -17,7 +17,8 @@ const ChapterWiseFaqDao = require("../models/chapterWiseFAQDao");
     }
 
    async checkFaq(req, res) {
-    var sql = 'SELECT * FROM chapterFaq cf WHERE cf.faq = "'+req.body.faq+'"' ;
+    // var sql = 'SELECT * FROM chapterFaq cf WHERE cf.faq = "'+req.body.faq+'"' ;
+    var sql = 'SELECT * FROM chapterFaq cf WHERE ARRAY_CONTAINS (cf.faq, "'+req.body.faq+'")' ;
  
     const querySpec = {
       query: sql
