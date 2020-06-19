@@ -26,6 +26,17 @@ const ChapterWiseFaqDao = require("../models/chapterWiseFAQDao");
       const items = await this.chapterWiseFaqDao.find(querySpec);
       return items
     }
+
+    async faqList(req, res) {
+      var sql = 'SELECT * FROM chapterFaq' ;
+  
+      const querySpec = {
+        query: sql
+      };
+      const items = await this.chapterWiseFaqDao.find(querySpec);
+      return items
+    }
+
     async updateChapterWiseFaq(payload) {
       var data = await this.chapterWiseFaqDao.updateItem(payload.faqId, payload);
       return data;

@@ -101,6 +101,70 @@ router.put('/updateChapterwiseFaq', [
   })
 })
 
+router.get('/getAllFaq', async(req, res) => {
+    
+  chapterwisefaqlist.faqList(req, res).then(getData=>{
+    if(getData.length > 0){
+      res.status(200).json({
+        status:200,
+        data: getData
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg: 'no data found'
+      })
+    }
+    
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
+})
 
+router.post('/checkFaqBySelectiveWords', async(req, res) => {
+    
+  chapterwisefaqlist.faqList(req, res).then( async (getData)=>{
+    let getFaq = await findFaq(getData, req, res);
+    // console.log(getFaq)
+    
+    if(getFaq){
+      res.status(200).json({
+        status:200,
+        data: getFaq
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg: 'no data found'
+      })
+    }
+    
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
+})
+
+async function findFaq(getData, req, res){
+  let userMsg = req.body.faq;
+  for(i=0; i< getData.length; i++){
+    for(j=0; j<getData[i].faq.length; j++){
+      var wordArr = getData[i].faq[j].split("|");
+      var re = new RegExp(getData[i].faq[j], 'g');
+      var matches = userMsg.match(re);
+      if(matches != null){
+        var matchesfilter = matches.filter((item, index) => {
+          return matches.indexOf(item) === index ;
+        })
+        // console.log(matchesfilter)
+        if(wordArr.length == matchesfilter.length){
+          return getData[i];
+          break;
+        }
+      }
+    }
+  }
+}
 
 module.exports = router;
