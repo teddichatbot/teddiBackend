@@ -52,9 +52,10 @@ class UserDao {
     item.lastName = ''
     item.email = ''
     item.password = ''
-    item.child_dob = ''
-    item.child_age_range = ''
-    item.child_gender = ''
+    // item.child_dob = ''
+    // item.child_age_range = ''
+    // item.child_gender = ''
+    item.child_data = []
     item.parent_age_range = ''
     item.parent_gender = ''
     item.zip_code = ''
@@ -73,9 +74,10 @@ class UserDao {
     doc.registerCompleted = true
     doc.email = req.body.email
     doc.password = req.body.password
-    doc.child_dob = req.body.child_dob
-    doc.child_age_range = req.body.child_age_range
-    doc.child_gender = req.body.child_gender
+    // doc.child_dob = req.body.child_dob
+    // doc.child_age_range = req.body.child_age_range
+    // doc.child_gender = req.body.child_gender
+    doc.child_data = req.body.child_data
     doc.parent_age_range = req.body.parent_age_range
     doc.parent_gender = req.body.parent_gender
     doc.zip_code = req.body.zip_code
@@ -171,6 +173,25 @@ class UserDao {
     doc.firstName = fname;
     doc.lastName = lname;
     
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async updateUserProfile(itemId,req) {
+    const doc = await this.getItem(itemId)
+    
+    doc.firstName = req.body.lastName
+    doc.lastName = req.body.lastName
+    doc.child_data = req.body.child_data
+    doc.parent_age_range = req.body.parent_age_range
+    doc.parent_gender = req.body.parent_gender
+    doc.zip_code = req.body.zip_code
+    doc.occupation = req.body.occupation
+    doc.ethnicityMaster = req.body.ethnicityMaster
+    doc.ethnicityChild = req.body.ethnicityChild
+
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)

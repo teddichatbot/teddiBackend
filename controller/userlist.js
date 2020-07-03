@@ -56,6 +56,12 @@ const UserDao = require("../models/userDao");
     return data;
   }
 
+  async updateUserDetails(req, res) {
+    const id = req.body.id;
+    var data = await this.userDao.updateUserProfile(id,req);
+    return data;
+  }
+
  }
 
  module.exports = UserList;

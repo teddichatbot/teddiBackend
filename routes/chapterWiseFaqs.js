@@ -122,6 +122,37 @@ router.get('/getAllFaq', async(req, res) => {
   })
 })
 
+router.get('/faqListByChapterName', [
+  check('chapterName','Chapter Name is required').not().isEmpty(),
+], async(req, res) => {
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+    
+  chapterwisefaqlist.faqListByChapterName(req, res).then(getData=>{
+    if(getData.length > 0){
+      res.status(200).json({
+        status:200,
+        data: getData
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg: 'no data found'
+      })
+    }
+    
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
+})
+
 router.post('/checkFaqBySelectiveWords', async(req, res) => {
     
   chapterwisefaqlist.faqList(req, res).then( async (getData)=>{

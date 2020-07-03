@@ -33,9 +33,10 @@ router.put('/registration', [
   // check('name').isLength({ min: 5 }).withMessage('Must be at least 5 chars long'),
   check('email').isEmail().withMessage('Invalid Email Id'),
   check('password','Password is required').not().isEmpty(),
-  check('child_dob','Child DOB is required').not().isEmpty(),
-  check('child_age_range','Child Age Range is required').not().isEmpty(),
-  check('child_gender','Child Gender is required').not().isEmpty(),
+  // check('child_dob','Child DOB is required').not().isEmpty(),
+  // check('child_age_range','Child Age Range is required').not().isEmpty(),
+  // check('child_gender','Child Gender is required').not().isEmpty(),
+  check('child_data','Child Data is required').not().isEmpty(),
   check('parent_age_range','Parent Age Range is required').not().isEmpty(),
   check('parent_gender','Parent Gender is required').not().isEmpty(),
   check('zip_code','Zip code is required').not().isEmpty(),
@@ -301,6 +302,47 @@ router.get('/getSingleUser',[
   }
 })
 
-router
+router.put('/updateUserProfile', [
+  check('conversationId','Conversation Id is required').not().isEmpty(),
+  check('firstName','First Name is required').not().isEmpty(),
+  check('lastName','Last Name is required').not().isEmpty(),
+  check('child_data','Child Data is required').not().isEmpty(),
+  check('parent_age_range','Parent Age Range is required').not().isEmpty(),
+  check('parent_gender','Parent Gender is required').not().isEmpty(),
+  check('zip_code','Zip code is required').not().isEmpty(),
+  check('occupation','Occupation is required').not().isEmpty(),
+  check('ethnicityMaster','Ethnicity Master is required').not().isEmpty(),
+  check('ethnicityChild','Ethnicity Child is required').not().isEmpty()
+], async(req,res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  try{
+    var userData = await userList.checkConversationId(req, res);
+    if(userData.length>0){
+      req.body.id = userData[0].id;
+      var updateData = await userList.updateUserDetails(req, res);
+      // console.log(updateData)
+      res.status(200).json({
+        status:200,
+        userData: updateData
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'Invalid Conversation Id'
+      })
+    }
+  }catch(e){
+    res.status(400).json({
+      status:400,
+      msg:'Oops!! Something Went Wrong.'
+    })
+  }
+})
 
 module.exports = router;
