@@ -37,7 +37,6 @@ const BotDataDao = require("../models/botDataDao");
   }
 
   async setUserName(itemId, fname, lname) {
-    console.log('itemId list', itemId)
     var data = await this.botDataDao.updateUserName(itemId, fname, lname);
     return data;
   }

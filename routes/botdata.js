@@ -51,9 +51,8 @@ router.post('/setNameInUserSession', async(req, res)=>{
   try{
     var userData = await botDataList.checkConversationId(req, res);
     if(userData.length>0){
-      console.log(userData[0].id)
       
-      botDataList.setUserName(userData[0]._etag, req.body.firstName, req.body.lastName).then(async(getData)=>{
+      botDataList.setUserName(userData[0].id, req.body.firstName, req.body.lastName).then(async(getData)=>{
         res.status(200).json({
           status:200,
           msg:'Saved Full Name'

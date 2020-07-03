@@ -45,9 +45,7 @@ class BotdataDao {
   // }
 
   async updateUserName(itemId, fname, lname) {
-    console.log('itemId dao', itemId)
     const doc = await this.getItem(itemId);
-    console.log(doc)
     doc.document.userInfo.firstName = fname
     doc.document.userInfo.lastName = lname
 
@@ -58,8 +56,8 @@ class BotdataDao {
   }
 
   async getItem(itemId) {
-    console.log('here')
-    const { resource } = await this.container.item(itemId, partitionKey).read()
+    // const { resource } = await this.container.item(itemId, partitionKey).read()
+    const { resource } = await this.container.item(itemId, itemId).read()
     return resource
   }
 }
