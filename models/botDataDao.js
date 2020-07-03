@@ -46,11 +46,13 @@ class BotdataDao {
 
   async updateUserName(itemId, fname, lname) {
     const doc = await this.getItem(itemId);
+    // console.log(doc)
     doc.document.userInfo.firstName = fname
     doc.document.userInfo.lastName = lname
 
     const { resource: replaced } = await this.container
-      .item(itemId, partitionKey)
+      // .item(itemId, partitionKey)
+      .item(itemId, itemId)
       .replace(doc)
     return replaced
   }

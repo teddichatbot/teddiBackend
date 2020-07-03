@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
 var passwordHash = require('password-hash');
+var unirest = require('unirest');
+var API_URL = 'https://teddinodeapp.azurewebsites.net/';
+// var API_URL = 'http://localhost:3005/';
 // cosmos
 const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
@@ -343,9 +346,26 @@ router.put('/updateUserProfile', [
 })
 
 var setNameInUserSession = (updateData, req, res)=>{
-   res.status(200).json({
-      status:200,
-      userData: updateData
+  console.log('host', req.headers.host);
+
+    unirest
+    .post(API_URL+'userSession/setNameInUserSession')
+    .headers({'Content-Type': 'application/json'})
+    .send({ 
+      "conversationId": updateData.conversationId,
+      "firstName": updateData.firstName,
+      "lastName": updateData.lastName
+    })
+    .then(async(response) => {
+        // console.log(response.body)
+        res.status(200).json({
+          status:200,
+          userData: updateData
+        })
+    })
+    .catch(err => {
+      console.log('dsds')
+        console.log(err)
     })
 }
 
