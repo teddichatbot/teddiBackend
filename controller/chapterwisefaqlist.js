@@ -37,7 +37,7 @@ const ChapterWiseFaqDao = require("../models/chapterWiseFAQDao");
       return items
     }
     async faqListByChapterName(req, res) {
-      var sql = 'SELECT * FROM chapterFaq cf WHERE cf.chapterName= "'+req.body.chapterName+'"' ;
+      var sql = 'SELECT * FROM chapterFaq cf WHERE cf.chapterName= "'+req.query.chapterName+'"' ;
   
       const querySpec = {
         query: sql

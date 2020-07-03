@@ -327,11 +327,7 @@ router.put('/updateUserProfile', [
       req.body.id = userData[0].id;
       var updateData = await userList.updateUserDetails(req, res);
       // console.log(updateData)
-      // setNameIn
-      res.status(200).json({
-        status:200,
-        userData: updateData
-      })
+      setNameInUserSession(updateData, req, res)
     }else{
       res.status(400).json({
         status:400,
@@ -345,5 +341,12 @@ router.put('/updateUserProfile', [
     })
   }
 })
+
+var setNameInUserSession = (updateData, req, res)=>{
+   res.status(200).json({
+      status:200,
+      userData: updateData
+    })
+}
 
 module.exports = router;
