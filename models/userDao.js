@@ -181,9 +181,12 @@ class UserDao {
 
   async updateUserProfile(itemId,req) {
     const doc = await this.getItem(itemId)
-    
-    doc.firstName = req.body.lastName
-    doc.lastName = req.body.lastName
+    if(req.body.firstName != ''){
+      doc.firstName = req.body.firstName
+    }
+    if(req.body.lastName != ''){
+      doc.lastName = req.body.lastName
+    }
     doc.child_data = req.body.child_data
     doc.parent_age_range = req.body.parent_age_range
     doc.parent_gender = req.body.parent_gender

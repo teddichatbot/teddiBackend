@@ -304,8 +304,8 @@ router.get('/getSingleUser',[
 
 router.put('/updateUserProfile', [
   check('conversationId','Conversation Id is required').not().isEmpty(),
-  check('firstName','First Name is required').not().isEmpty(),
-  check('lastName','Last Name is required').not().isEmpty(),
+  // check('firstName','First Name is required').not().isEmpty(),
+  // check('lastName','Last Name is required').not().isEmpty(),
   check('child_data','Child Data is required').not().isEmpty(),
   check('parent_age_range','Parent Age Range is required').not().isEmpty(),
   check('parent_gender','Parent Gender is required').not().isEmpty(),
@@ -327,6 +327,7 @@ router.put('/updateUserProfile', [
       req.body.id = userData[0].id;
       var updateData = await userList.updateUserDetails(req, res);
       // console.log(updateData)
+      // setNameIn
       res.status(200).json({
         status:200,
         userData: updateData
