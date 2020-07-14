@@ -8,6 +8,7 @@ config.containerChatHistoryId = "chatHistory";
 config.containerLoadingScreenQuotesId = "loadScreenQuotes";
 config.containerAdminId = "admin";
 config.containerChapterWiseFaqId = "chapterFaq";
+// config.containerChapterWiseFaqId = "chapterFaqTest";
 config.containerUserSessionId = "botdata";
 
 

@@ -178,17 +178,22 @@ router.post('/checkFaqBySelectiveWords', async(req, res) => {
 })
 
 async function findFaq(getData, req, res){
-  let userMsg = req.body.faq;
+  let userMsg = req.body.faq.toLowerCase();
+
+
   for(i=0; i< getData.length; i++){
     for(j=0; j<getData[i].faq.length; j++){
+      
       var wordArr = getData[i].faq[j].split("|");
+      
       var re = new RegExp(getData[i].faq[j], 'g');
       var matches = userMsg.match(re);
       if(matches != null){
+        
         var matchesfilter = matches.filter((item, index) => {
-          return matches.indexOf(item) === index ;
+          return matches.indexOf(item) === index ; //remove duplicate element
         })
-        // console.log(matchesfilter)
+        // console.log('matchesfilter',matchesfilter)
         if(wordArr.length == matchesfilter.length){
           return getData[i];
           break;
