@@ -139,10 +139,18 @@ router.get('/getSinglePostcodeDetails', [
     })
   }
   postcodeslist.getSinglePostcodeDetails(req, res).then(getData=>{
-    res.status(200).json({
-      status:200,
-      postcodeData: getData[0]
-    })
+    if(getData.length > 0){
+      res.status(200).json({
+        status:200,
+        postcodeData: getData[0]
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg: 'No data found'
+      })
+    }
+    
   })
   .catch(err =>{
     res.json(err)
