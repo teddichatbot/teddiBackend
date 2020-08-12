@@ -10,6 +10,7 @@ config.containerAdminId = "admin";
 config.containerChapterWiseFaqId = "chapterFaq";
 // config.containerChapterWiseFaqId = "chapterFaqTest";
 config.containerUserSessionId = "botdata";
+config.containerPostcodeId = "postcodes";
 
 
 module.exports = config;

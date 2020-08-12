@@ -23,7 +23,7 @@ const QuotesDao = require("../models/quotesDao");
 
     const items = await this.quotesDao.find(querySpec);
     return items
-  }
+   }
 
  }
 
