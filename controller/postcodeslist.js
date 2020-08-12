@@ -28,7 +28,7 @@ const PostcodesDao = require("../models/postcodesDao");
 
    async getSinglePostcodeDetails(req, res){
       const querySpec = {
-        query: "SELECT * FROM postcodes c WHERE c.postcode = '"+req.body.postcode+"'"
+        query: "SELECT * FROM postcodes c WHERE c.postcode = '"+req.query.postcode+"'"
       };
       // console.log(querySpec)
       const items = await this.postcodesDao.find(querySpec);
