@@ -85,9 +85,8 @@ router.post('/addBulkPostcodes', upload.single('file'), (req, res)=>{
         for(var i=0; i<result.length; i++){
           req.body.postcode = result[i].Postcode;
           req.body.location = fileNameArr[0];
-          console.log(req.body.postcode+'-'+req.body.location);
-          //  await addOneByOnePostcodes(req, res);
-           await postcodeslist.addPostcode(req, res);
+          
+           await addOneByOnePostcodes(req, res);
         }
         console.log('bulk insert complete');
         res.send('bulk insert complete');
@@ -96,22 +95,13 @@ router.post('/addBulkPostcodes', upload.single('file'), (req, res)=>{
 })
 
 const addOneByOnePostcodes = async(req, res)=>{
-  console.log(req.body.postcode+'-'+req.body.location);
-  postcodeslist.addPostcode(req, res).then(addData=>{
-    console.log(addData)
-    // return addData
+  // console.log(req.body.postcode+'-'+req.body.location);
+  await postcodeslist.addPostcodeForBulkInsert(req, res).then(addData=>{
+    console.log("addData", addData.postcode)
   })
   .catch(err =>{
-    // res.json(err)
     console.log(err)
   })
-
-  // try{
-  //   var result = await postcodeslist.addPostcode(req, res);
-  //   console.log(result)
-  // }catch(e){
-  //   console.log(e)
-  // }
   
 }
 
@@ -120,7 +110,7 @@ router.get('/getAllPostcodes', (req,res)=>{
     res.status(200).json({
       status:200,
       count: getData.length,
-      postcodeList: getData
+      postcodeList: getData[getData.length-1]
     })
   })
   .catch(err =>{

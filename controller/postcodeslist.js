@@ -10,12 +10,20 @@ const PostcodesDao = require("../models/postcodesDao");
    }
    
    async addPostcode(req, res) {
-    // console.log('item', req.body.valueOf())
      const item = req.body;
-    // console.log('item', item)
      var data = await this.postcodesDao.addItem(item);
     return data;
    }
+
+   async addPostcodeForBulkInsert(req, res) {
+    const item = {
+      postcode: req.body.postcode,
+      location: req.body.location
+    };
+    console.log('item',item)
+    var data = await this.postcodesDao.addItem(item);
+   return data;
+  }
 
    async getAllPostcodes(req, res) {
     const querySpec = {
