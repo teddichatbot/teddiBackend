@@ -11,6 +11,7 @@ config.containerChapterWiseFaqId = "chapterFaq";
 // config.containerChapterWiseFaqId = "chapterFaqTest";
 config.containerUserSessionId = "botdata";
 config.containerPostcodeId = "postcodes";
+config.containerFeedbackId = "feedback";
 
 
 module.exports = config;

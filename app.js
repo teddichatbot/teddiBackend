@@ -15,6 +15,7 @@ var adminRouter = require('./routes/admin');
 var chapterWiseFaqRouter = require('./routes/chapterWiseFaqs');
 var userSessionRouter = require('./routes/botdata');
 var postcodesRouter = require('./routes/postcodes');
+var feedbackRouter = require('./routes/feedback');
 
 var app = express();
 app.use(cors())
@@ -41,6 +42,7 @@ app.use('/admin', adminRouter);
 app.use('/chapterFaq', chapterWiseFaqRouter);
 app.use('/userSession', userSessionRouter);
 app.use('/postcodes', postcodesRouter);
+app.use('/feedback', feedbackRouter);
 
 
 // catch 404 and forward to error handler
