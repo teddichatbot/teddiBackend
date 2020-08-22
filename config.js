@@ -12,6 +12,7 @@ config.containerChapterWiseFaqId = "chapterFaq";
 config.containerUserSessionId = "botdata";
 config.containerPostcodeId = "postcodes";
 config.containerFeedbackId = "feedback";
+config.containerCategoryId = "category";
 
 
 module.exports = config;
