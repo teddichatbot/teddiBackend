@@ -16,6 +16,26 @@ const CategoryDao = require("../models/categoryDao");
     return data;
    }
 
+   async categoryList(req, res) {
+    var sql = 'SELECT * FROM category' ;
+
+    const querySpec = {
+      query: sql
+    };
+    const items = await this.categoryDao.find(querySpec);
+    return items
+  }
+
+  async categoryByCategoryName(req, res) {
+    var sql = 'SELECT * FROM category cn WHERE cn.categoryName= "'+req.query.categoryName+'"' ;
+
+    const querySpec = {
+      query: sql
+    };
+    const items = await this.categoryDao.find(querySpec);
+    return items
+  }
+
  }
 
  module.exports = CategoryList;
