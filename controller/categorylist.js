@@ -26,15 +26,15 @@ const CategoryDao = require("../models/categoryDao");
     return items
   }
 
-  async categoryByCategoryName(req, res) {
-    var sql = 'SELECT * FROM category cn WHERE cn.categoryName= "'+req.query.categoryName+'"' ;
+  // async categoryByCategoryName(req, res) {
+  //   var sql = 'SELECT * FROM category cn WHERE cn.categoryName= "'+req.query.categoryName+'"' ;
 
-    const querySpec = {
-      query: sql
-    };
-    const items = await this.categoryDao.find(querySpec);
-    return items
-  }
+  //   const querySpec = {
+  //     query: sql
+  //   };
+  //   const items = await this.categoryDao.find(querySpec);
+  //   return items
+  // }
 
  }
 

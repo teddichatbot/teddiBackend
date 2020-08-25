@@ -17,6 +17,7 @@ var userSessionRouter = require('./routes/botdata');
 var postcodesRouter = require('./routes/postcodes');
 var feedbackRouter = require('./routes/feedback');
 var categoryRouter = require('./routes/category');
+var recipesRouter = require('./routes/recipes');
 
 var app = express();
 app.use(cors())
@@ -45,6 +46,7 @@ app.use('/userSession', userSessionRouter);
 app.use('/postcodes', postcodesRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/category', categoryRouter);
+app.use('/recipes', recipesRouter);
 
 
 // catch 404 and forward to error handler

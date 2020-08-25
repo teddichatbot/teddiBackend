@@ -13,6 +13,7 @@ config.containerUserSessionId = "botdata";
 config.containerPostcodeId = "postcodes";
 config.containerFeedbackId = "feedback";
 config.containerCategoryId = "category";
+config.containerRecipesId = "recipes";
 
 
 module.exports = config;
