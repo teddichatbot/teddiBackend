@@ -28,7 +28,7 @@ const RecipesDao = require("../models/recipesDao");
 
   async recipesListByCategory(req, res) {
     var sql = 'SELECT * FROM recipes r WHERE ARRAY_CONTAINS(r.category, "'+req.query.categoryName+'")' ;
-    console.log(sql)
+    // console.log(sql)
 
     const querySpec = {
       query: sql
