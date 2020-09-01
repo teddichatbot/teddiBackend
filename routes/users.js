@@ -369,4 +369,24 @@ var setNameInUserSession = (updateData, req, res)=>{
     })
 }
 
+router.get('/getUsersList', async(req, res)=>{
+  try{
+    var userData = await userList.getUsersList(req, res);
+    if(userData.length>0){
+      res.status(200).json({
+        status:200,
+        userData: userData
+      })
+      
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'No data found'
+      })
+    }
+  }catch(err){
+    res.json(err)
+  }
+})
+
 module.exports = router;

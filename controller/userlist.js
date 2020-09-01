@@ -62,6 +62,15 @@ const UserDao = require("../models/userDao");
     return data;
   }
 
+  async getUsersList(req, res) {
+    const querySpec = {
+      query: "SELECT * FROM users u "
+    };
+
+    const items = await this.userDao.find(querySpec);
+    return items
+  }
+
  }
 
  module.exports = UserList;
