@@ -62,6 +62,7 @@ class UserDao {
     item.occupation = ''
     item.ethnicityMaster = ''
     item.ethnicityChild = ''
+    item.giveFeedback = false
     const { resource: doc } = await this.container.items.create(item)
     return doc
   }
@@ -195,6 +196,15 @@ class UserDao {
     doc.ethnicityMaster = req.body.ethnicityMaster
     doc.ethnicityChild = req.body.ethnicityChild
 
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async giveFeedback(itemId) {
+    const doc = await this.getItem(itemId)
+    doc.giveFeedback = true
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)

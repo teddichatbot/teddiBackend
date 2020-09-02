@@ -62,9 +62,23 @@ const UserDao = require("../models/userDao");
     return data;
   }
 
+  async giveFeedback(id) {
+    var data = await this.userDao.giveFeedback(id);
+    return data;
+  }
+
   async getUsersList(req, res) {
     const querySpec = {
       query: "SELECT * FROM users u "
+    };
+
+    const items = await this.userDao.find(querySpec);
+    return items
+  }
+
+  async giveFeedbackUsersList(req, res) {
+    const querySpec = {
+      query: "SELECT * FROM users u WHERE u.giveFeedback=true"
     };
 
     const items = await this.userDao.find(querySpec);

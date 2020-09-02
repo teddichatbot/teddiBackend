@@ -24,14 +24,14 @@ const FeedbackDao = require("../models/feedbackDao");
     return items
    }
 
-  //  async getSinglePostcodeDetails(req, res){
-  //     const querySpec = {
-  //       query: "SELECT * FROM postcodes c WHERE c.postcode = '"+req.query.postcode+"'"
-  //     };
-  //     // console.log(querySpec)
-  //     const items = await this.feedbackDao.find(querySpec);
-  //     return items
-  //  }
+   async getFeedbackListBySingleUser(req, res){
+      const querySpec = {
+        query: "SELECT * FROM feedback c WHERE c.conversationId = '"+req.params.catrgotyId+"'"
+      };
+      // console.log(querySpec)
+      const items = await this.feedbackDao.find(querySpec);
+      return items
+   }
 
  }
 
