@@ -11,6 +11,7 @@ const FeedbackDao = require("../models/feedbackDao");
    
    async addFeedback(req, res) {
      const item = req.body;
+     item.createdOn = new Date();
      var data = await this.feedbackDao.addItem(item);
     return data;
    }
