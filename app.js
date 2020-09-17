@@ -18,6 +18,7 @@ var postcodesRouter = require('./routes/postcodes');
 var feedbackRouter = require('./routes/feedback');
 var categoryRouter = require('./routes/category');
 var recipesRouter = require('./routes/recipes');
+var randomMsgRouter = require('./routes/randomMsg');
 
 var app = express();
 app.use(cors())
@@ -47,6 +48,7 @@ app.use('/postcodes', postcodesRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/category', categoryRouter);
 app.use('/recipes', recipesRouter);
+app.use('/randomMsg', randomMsgRouter);
 
 
 // catch 404 and forward to error handler

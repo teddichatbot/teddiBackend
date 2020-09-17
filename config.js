@@ -14,6 +14,7 @@ config.containerPostcodeId = "postcodes";
 config.containerFeedbackId = "feedback";
 config.containerCategoryId = "category";
 config.containerRecipesId = "recipes";
+config.containerRandomMsgId = "randomMessages";
 
 
 module.exports = config;
