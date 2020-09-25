@@ -35,6 +35,12 @@ const RandomMsgDao = require("../models/randomMsgDao");
       return items
    }
 
+   async updateRandomMsg(req, res) {
+    const item = req.body;
+    var data = await this.randomMsgDao.updateMsgDetails(item);
+   return data;
+  }
+
  }
 
  module.exports = RandomMsgList;

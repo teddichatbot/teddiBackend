@@ -42,7 +42,7 @@ router.post('/addRandomMsg', [
   randomMsglist.addRandomMsg(req, res).then(addData=>{
     res.status(200).json({
       status:200,
-      msg:'Add Random Message Successfully',
+      msg:'Message Added Successfully',
       msgData: addData
     })
   })
@@ -81,6 +81,31 @@ router.get('/msgListByChapter', [
     res.status(200).json({
       status:200,
       msgData: getData
+    })
+  })
+  .catch(err =>{
+    res.json(err)
+  })
+})
+
+router.post('/UpdateRandomMsg', [
+  check('respMsg','Message is required').not().isEmpty(),
+  check('chapterType','Chapter Type is required').not().isEmpty(),
+  check('msgId','Messsage Id is required').not().isEmpty(),
+], async(req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+
+  randomMsglist.updateRandomMsg(req, res).then(updateData=>{
+    res.status(200).json({
+      status:200,
+      msg:'Updated Successfully',
+      msgData: updateData
     })
   })
   .catch(err =>{

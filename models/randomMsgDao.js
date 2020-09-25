@@ -43,6 +43,24 @@ class RandomMsgDao {
     const { resource: doc } = await this.container.items.create(item)
     return doc
   }
+
+  async updateMsgDetails(item){
+    const doc = await this.getItem(item.msgId)
+
+    doc.respMsg = item.respMsg;
+    doc.predict = item.predict;
+    doc.chapterType = item.chapterType;
+    
+    const { resource: replaced } = await this.container
+      .item(item.msgId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async getItem(itemId) {
+    const { resource } = await this.container.item(itemId, partitionKey).read()
+    return resource
+  }
 }
 
 module.exports = RandomMsgDao
