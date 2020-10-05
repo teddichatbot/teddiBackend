@@ -3,6 +3,7 @@ var router = express.Router();
 const { check, validationResult } = require('express-validator');
 var multer  = require('multer');
 var xlsxj = require("xlsx-to-json");
+var unirest = require('unirest');
 // cosmos
 const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
@@ -147,5 +148,38 @@ router.get('/getSinglePostcodeDetails', [
   })
 })
 
+
+router.post('/postcodeMigrateIntoLiveServer', async(req, res)=>{
+  postcodeslist.getAllPostcodes(req, res).then(async(result)=>{
+    // console.log(result[2])
+    // for(var i=0; i<result.length; i++){
+    //   await addPostcodeIntoLiveServer(result[i].postcode, result[i].location, result[i].id);
+    //   console.log('length',i);
+    // }
+    // console.log('All data inserted');
+    // res.json('All data inserted')
+    res.json(result.length)
+  })
+  .catch(err=>{
+    res.json(err)
+  })
+})
+
+const addPostcodeIntoLiveServer = (postcode, location, id)=>{
+  // console.log(respMsg)
+  unirest
+    .post('https://teddibackend.azurewebsites.net/postcodes/addPostcode')
+    .headers({'Content-Type': 'application/json'})
+    .send({ 
+      "postcode": postcode,
+      "location": location
+    })
+    .then(async(response) => {
+        console.log('success id: '+id)  
+    })
+    .catch(err => {
+        console.log(" id: "+id)
+    })
+}
 
 module.exports = router;

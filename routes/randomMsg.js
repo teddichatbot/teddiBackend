@@ -3,6 +3,7 @@ var router = express.Router();
 const { check, validationResult } = require('express-validator');
 var multer  = require('multer');
 var xlsxj = require("xlsx-to-json");
+var unirest = require('unirest');
 // cosmos
 const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
@@ -112,5 +113,38 @@ router.post('/UpdateRandomMsg', [
     res.json(err)
   })
 })
+
+router.post('/randMsgMigrateIntoLiveServer', async(req, res)=>{
+  randomMsglist.getAllMsgList(req, res).then(async(result)=>{
+    
+    for(var i=0; i<result.length; i++){
+      await addMsgIntoLiveServer(result[i].respMsg, result[i].predict, result[i].chapterType, result[i].id);
+      console.log('length',i);
+    }
+    console.log('All data inserted');
+    res.json('All data inserted')
+  })
+  .catch(err=>{
+    res.json(err)
+  })
+})
+
+const addMsgIntoLiveServer = (respMsg, predict, chapterType, id)=>{
+  // console.log(respMsg)
+  unirest
+    .post('https://teddibackend.azurewebsites.net/randomMsg/addRandomMsg')
+    .headers({'Content-Type': 'application/json'})
+    .send({ 
+      "respMsg": respMsg,
+      "predict": predict,
+      "chapterType": chapterType
+    })
+    .then(async(response) => {
+        console.log('success id: '+id)  
+    })
+    .catch(err => {
+        console.log(" id: "+id)
+    })
+}
 
 module.exports = router;

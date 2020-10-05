@@ -41,6 +41,15 @@ const RandomMsgDao = require("../models/randomMsgDao");
    return data;
   }
 
+  async getAllMsgList(req, res){
+    const querySpec = {
+      query: "SELECT * FROM randomMessages c "
+    };
+    
+    const items = await this.randomMsgDao.find(querySpec);
+    return items
+  }
+
  }
 
  module.exports = RandomMsgList;

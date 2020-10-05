@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
+var unirest = require('unirest');
 // cosmos
 const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
@@ -201,6 +202,40 @@ async function findFaq(getData, req, res){
       }
     }
   }
+}
+
+router.post('/faqMigrateIntoLiveServer', async(req, res)=>{
+  chapterwisefaqlist.faqList(req, res).then(async(result)=>{
+    // console.log(result[2]);
+    for(var i=0; i<result.length; i++){
+      await addFaqIntoLiveServer(result[i].faq, result[i].question, result[i].answer, result[i].chapterName, result[i].id);
+      console.log('length',i);
+    }
+    console.log('All data inserted');
+    res.json('All data inserted')
+  })
+  .catch(err=>{
+    res.json(err)
+  })
+})
+
+const addFaqIntoLiveServer = (faq, question, answer, chapterName, id)=>{
+  // console.log(respMsg)
+  unirest
+    .post('https://teddibackend.azurewebsites.net/chapterFaq/addChapterWiseFaq')
+    .headers({'Content-Type': 'application/json'})
+    .send({ 
+      "faq": faq,
+      "question": question,
+      "answer": answer,
+      "chapterName": chapterName
+    })
+    .then(async(response) => {
+        console.log('success id: '+id)  
+    })
+    .catch(err => {
+        console.log("err id: "+id)
+    })
 }
 
 module.exports = router;

@@ -16,15 +16,15 @@ const RecipesDao = require("../models/recipesDao");
     return data;
    }
 
-  //  async getAllRecipe(req, res) {
-  //   var sql = 'SELECT * FROM recipes' ;
+   async getAllRecipe(req, res) {
+    var sql = 'SELECT * FROM recipes' ;
 
-  //   const querySpec = {
-  //     query: sql
-  //   };
-  //   const items = await this.recipesDao.find(querySpec);
-  //   return items
-  // }
+    const querySpec = {
+      query: sql
+    };
+    const items = await this.recipesDao.find(querySpec);
+    return items
+  }
 
   async recipesListByCategory(req, res) {
     var sql = 'SELECT * FROM recipes r WHERE ARRAY_CONTAINS(r.category, "'+req.query.categoryName+'")' ;

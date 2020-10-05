@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
+var unirest = require('unirest');
 // cosmos
 const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
@@ -113,5 +114,46 @@ router.get('/getSingleRecipe', [
   })
 })
 
+router.post('/recipeMigrateIntoLiveServer', async(req, res)=>{
+  recipelist.getAllRecipe(req, res).then(async(result)=>{
+    // console.log(result[9]);
+    for(var i=0; i<result.length; i++){
+      let recipeFormat = result[i].recipeFormat? result[i].recipeFormat : 'type 1';
+      await addRecipeIntoLiveServer(recipeFormat, result[i].recipeName, result[i].ingredients, result[i].method, result[i].category, result[i].timeToCook, result[i].recipeBy, result[i].diet, result[i].foodImage, result[i].serves, result[i].notes, result[i].id);     
+      console.log('length',i);
+    }
+    console.log('All data inserted');
+    res.json('All data inserted')
+  })
+  .catch(err=>{
+    res.json(err)
+  })
+})
+
+const addRecipeIntoLiveServer = (recipeFormat, recipeName, ingredients, method, category, timeToCook, recipeBy, diet, foodImage, serves, notes, id)=>{
+  // console.log(respMsg)
+  unirest
+    .post('https://teddibackend.azurewebsites.net/recipes/addRecipe')
+    .headers({'Content-Type': 'application/json'})
+    .send({ 
+      "recipeFormat": recipeFormat,
+      "recipeName": recipeName,
+      "ingredients": ingredients,
+      "method": method,
+      "category": category,
+      "timeToCook": timeToCook,
+      "recipeBy": recipeBy,
+      "diet": diet,
+      "foodImage": foodImage,
+      "serves": serves,
+      "notes": notes
+    })
+    .then(async(response) => {
+        console.log('success id: '+id)  
+    })
+    .catch(err => {
+        console.log(" id: "+id)
+    })
+}
 
 module.exports = router;
