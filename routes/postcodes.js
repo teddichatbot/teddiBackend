@@ -150,36 +150,25 @@ router.get('/getSinglePostcodeDetails', [
 
 
 // router.post('/postcodeMigrateIntoLiveServer', async(req, res)=>{
-//   postcodeslist.getAllPostcodes(req, res).then(async(result)=>{
-//     // console.log(result[2])
-//     for(var i=0; i<500; i++){
-//       await addPostcodeIntoLiveServer(result[i].postcode, result[i].location, result[i].id);
-//       console.log('length',i);
-//     }
-//     console.log('All data inserted');
-//     res.json('All data inserted')
-//     // res.json(result.length)
-//   })
-//   .catch(err=>{
-//     res.json(err)
-//   })
-// })
 
-// const addPostcodeIntoLiveServer = (postcode, location, id)=>{
-//   // console.log(respMsg)
 //   unirest
-//     .post('https://teddibackend.azurewebsites.net/postcodes/addPostcode')
-//     .headers({'Content-Type': 'application/json'})
-//     .send({ 
-//       "postcode": postcode,
-//       "location": location
-//     })
+//     .get('https://teddinodeapp.azurewebsites.net/postcodes/getAllPostcodes')
+//     // .headers({'Content-Type': 'application/json'})
 //     .then(async(response) => {
-//         console.log('success id: '+id)  
+//         // console.log(response.body.postcodeList.length) 
+//         for(var i=0; i<response.body.postcodeList.length; i++){
+//           await postcodeslist.addPostcodeForLiveServer(response.body.postcodeList[i].postcode, response.body.postcodeList[i].location)
+//           console.log('length',i);
+//         } 
+//         console.log('bulk insert Postcode in live server')
+//         res.json('bulk insert Postcode in live server')
+//         // res.json(response.body.postcodeList)
 //     })
 //     .catch(err => {
-//         console.log(" id: "+id)
+//       res.json(err)
 //     })
-// }
+
+// })
+
 
 module.exports = router;

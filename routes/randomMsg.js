@@ -130,16 +130,19 @@ router.post('/randMsgMigrateIntoLiveServer', async(req, res)=>{
 
   unirest
     .get('https://teddinodeapp.azurewebsites.net/randomMsg/getAllRandomMsg')
-    .headers({'Content-Type': 'application/json'})
+    // .headers({'Content-Type': 'application/json'})
     .then(async(response) => {
-        console.log(response.data.msgData.length) 
-        // for(var i=0; i<result.length; i++){
-        //   await randomMsglist.addRandomMsgForBulkInsert(result[i].respMsg, result[i].predict, result[i].chapterType)
-        //   console.log('length',i);
-        // } 
+        // console.log(response.body.msgData.length) 
+        for(var i=0; i<response.body.msgData.length; i++){
+          await randomMsglist.addRandomMsgForBulkInsert(response.body.msgData[i].respMsg, response.body.msgData[i].predict, response.body.msgData[i].chapterType)
+          console.log('length',i);
+        } 
+        console.log('bulk insert random msg in live server')
+        res.json('bulk insert random msg in live server')
     })
     .catch(err => {
-        console.log(" id: "+id)
+        // console.log(" id: "+id)
+      res.json(err)
     })
   
 })

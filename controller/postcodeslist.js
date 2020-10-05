@@ -25,6 +25,15 @@ const PostcodesDao = require("../models/postcodesDao");
    return data;
   }
 
+  async addPostcodeForLiveServer(postcode, location) {
+    const item = {
+      postcode: postcode,
+      location: location
+    };
+    var data = await this.postcodesDao.addItem(item);
+   return data;
+  }
+
    async getAllPostcodes(req, res) {
     const querySpec = {
       query: "SELECT * FROM postcodes q"
