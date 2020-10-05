@@ -111,7 +111,7 @@ router.get('/getAllPostcodes', (req,res)=>{
     res.status(200).json({
       status:200,
       count: getData.length,
-      postcodeList: getData[getData.length-1]
+      postcodeList: getData
     })
   })
   .catch(err =>{
@@ -149,37 +149,37 @@ router.get('/getSinglePostcodeDetails', [
 })
 
 
-router.post('/postcodeMigrateIntoLiveServer', async(req, res)=>{
-  postcodeslist.getAllPostcodes(req, res).then(async(result)=>{
-    // console.log(result[2])
-    // for(var i=0; i<result.length; i++){
-    //   await addPostcodeIntoLiveServer(result[i].postcode, result[i].location, result[i].id);
-    //   console.log('length',i);
-    // }
-    // console.log('All data inserted');
-    // res.json('All data inserted')
-    res.json(result.length)
-  })
-  .catch(err=>{
-    res.json(err)
-  })
-})
+// router.post('/postcodeMigrateIntoLiveServer', async(req, res)=>{
+//   postcodeslist.getAllPostcodes(req, res).then(async(result)=>{
+//     // console.log(result[2])
+//     for(var i=0; i<500; i++){
+//       await addPostcodeIntoLiveServer(result[i].postcode, result[i].location, result[i].id);
+//       console.log('length',i);
+//     }
+//     console.log('All data inserted');
+//     res.json('All data inserted')
+//     // res.json(result.length)
+//   })
+//   .catch(err=>{
+//     res.json(err)
+//   })
+// })
 
-const addPostcodeIntoLiveServer = (postcode, location, id)=>{
-  // console.log(respMsg)
-  unirest
-    .post('https://teddibackend.azurewebsites.net/postcodes/addPostcode')
-    .headers({'Content-Type': 'application/json'})
-    .send({ 
-      "postcode": postcode,
-      "location": location
-    })
-    .then(async(response) => {
-        console.log('success id: '+id)  
-    })
-    .catch(err => {
-        console.log(" id: "+id)
-    })
-}
+// const addPostcodeIntoLiveServer = (postcode, location, id)=>{
+//   // console.log(respMsg)
+//   unirest
+//     .post('https://teddibackend.azurewebsites.net/postcodes/addPostcode')
+//     .headers({'Content-Type': 'application/json'})
+//     .send({ 
+//       "postcode": postcode,
+//       "location": location
+//     })
+//     .then(async(response) => {
+//         console.log('success id: '+id)  
+//     })
+//     .catch(err => {
+//         console.log(" id: "+id)
+//     })
+// }
 
 module.exports = router;

@@ -61,6 +61,12 @@ class RandomMsgDao {
     const { resource } = await this.container.item(itemId, partitionKey).read()
     return resource
   }
+
+  async deleteRandomMsg(id){
+    const { resource } = await this.container.item(id, partitionKey).delete();
+    console.log(`Deleted item with id: ${id}`);
+    return id
+  }
 }
 
 module.exports = RandomMsgDao

@@ -50,6 +50,11 @@ const RandomMsgDao = require("../models/randomMsgDao");
     return items
   }
 
+  async deleteRandMsg(id){
+    var data = await this.randomMsgDao.deleteRandomMsg(id);
+    return data;
+  }
+
  }
 
  module.exports = RandomMsgList;

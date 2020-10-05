@@ -67,6 +67,18 @@ const bulkInsertFunc = async(req, res)=>{
   }
 }
 
+router.get('/getAllRandomMsg', (req,res)=>{
+  randomMsglist.getAllMsgList(req, res).then(getData=>{
+    res.status(200).json({
+      status:200,
+      msgData: getData
+    })
+  })
+  .catch(err =>{
+    res.json(err)
+  })
+})
+
 router.get('/msgListByChapter', [
   check('chapterType','Chapter Type is required').not().isEmpty(),
 ], (req, res)=>{
@@ -115,36 +127,45 @@ router.post('/UpdateRandomMsg', [
 })
 
 router.post('/randMsgMigrateIntoLiveServer', async(req, res)=>{
-  randomMsglist.getAllMsgList(req, res).then(async(result)=>{
-    
-    for(var i=0; i<result.length; i++){
-      await addMsgIntoLiveServer(result[i].respMsg, result[i].predict, result[i].chapterType, result[i].id);
-      console.log('length',i);
-    }
-    console.log('All data inserted');
-    res.json('All data inserted')
-  })
-  .catch(err=>{
-    res.json(err)
-  })
-})
 
-const addMsgIntoLiveServer = (respMsg, predict, chapterType, id)=>{
-  // console.log(respMsg)
   unirest
-    .post('https://teddibackend.azurewebsites.net/randomMsg/addRandomMsg')
+    .get('https://teddinodeapp.azurewebsites.net/randomMsg/getAllRandomMsg')
     .headers({'Content-Type': 'application/json'})
-    .send({ 
-      "respMsg": respMsg,
-      "predict": predict,
-      "chapterType": chapterType
-    })
     .then(async(response) => {
-        console.log('success id: '+id)  
+        console.log(response.data.msgData.length) 
+        // for(var i=0; i<result.length; i++){
+        //   await randomMsglist.addRandomMsgForBulkInsert(result[i].respMsg, result[i].predict, result[i].chapterType)
+        //   console.log('length',i);
+        // } 
     })
     .catch(err => {
         console.log(" id: "+id)
     })
-}
+  
+})
+
+// router.post('/deleteRandomMsg', (req, res)=>{
+//   randomMsglist.deleteRandMsg(req.body.msgId).then(succres=>{
+//     res.send(succres)
+//   })
+//   .catch(err=>{
+//     res.json(err)
+//   })
+// })
+
+// router.post('/bulkDeleteRandomMsg', (req,res)=>{
+  // randomMsglist.getAllMsgList(req, res).then(async(result)=>{
+    
+//     for(var i=result.length-1; i>539; i--){
+//       await randomMsglist.deleteRandMsg(result[i].id)
+//       console.log('length',i);
+//     }
+//     console.log('All data deleted');
+//     res.json('All data deleted')
+//   })
+//   .catch(err=>{
+//     res.json(err)
+//   })
+// })
 
 module.exports = router;
