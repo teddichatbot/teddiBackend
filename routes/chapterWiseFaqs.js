@@ -166,8 +166,8 @@ router.post('/checkFaqBySelectiveWords', async(req, res) => {
         data: getFaq
       })
     }else{
-      res.status(204).json({
-        status:204,
+      res.status(200).json({
+        status:400,
         msg: 'no data found'
       })
     }
