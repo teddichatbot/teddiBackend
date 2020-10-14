@@ -51,6 +51,10 @@ const ChapterWiseFaqDao = require("../models/chapterWiseFAQDao");
       return data;
     }
 
+    async deleteSingleFaq(id){
+      var data = await this.chapterWiseFaqDao.deleteSingleFaq(id);
+      return data;
+    }
  }
 
  module.exports = ChapterWiseFaqList;

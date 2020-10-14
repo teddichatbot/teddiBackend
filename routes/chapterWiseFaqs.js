@@ -204,38 +204,61 @@ async function findFaq(getData, req, res){
   }
 }
 
-router.post('/faqMigrateIntoLiveServer', async(req, res)=>{
-  chapterwisefaqlist.faqList(req, res).then(async(result)=>{
-    // console.log(result[2]);
-    for(var i=0; i<result.length; i++){
-      await addFaqIntoLiveServer(result[i].faq, result[i].question, result[i].answer, result[i].chapterName, result[i].id);
-      console.log('length',i);
-    }
-    console.log('All data inserted');
-    res.json('All data inserted')
+// router.post('/faqMigrateIntoLiveServer', async(req, res)=>{
+//   chapterwisefaqlist.faqList(req, res).then(async(result)=>{
+//     // console.log(result[2]);
+//     for(var i=0; i<result.length; i++){
+//       await addFaqIntoLiveServer(result[i].faq, result[i].question, result[i].answer, result[i].chapterName, result[i].id);
+//       console.log('length',i);
+//     }
+//     console.log('All data inserted');
+//     res.json('All data inserted')
+//   })
+//   .catch(err=>{
+//     res.json(err)
+//   })
+// })
+
+// const addFaqIntoLiveServer = (faq, question, answer, chapterName, id)=>{
+//   // console.log(respMsg)
+//   unirest
+//     .post('https://teddibackend.azurewebsites.net/chapterFaq/addChapterWiseFaq')
+//     .headers({'Content-Type': 'application/json'})
+//     .send({ 
+//       "faq": faq,
+//       "question": question,
+//       "answer": answer,
+//       "chapterName": chapterName
+//     })
+//     .then(async(response) => {
+//         console.log('success id: '+id)  
+//     })
+//     .catch(err => {
+//         console.log("err id: "+id)
+//     })
+// }
+
+
+router.delete('/deleteSignleFaq', [
+  check('faqId','FAQ id is required').not().isEmpty()
+], async(req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+    
+  chapterwisefaqlist.deleteSingleFaq(req.query.faqId).then( async (deleteData)=>{
+    res.status(200).json({
+      status:200,
+      msg: 'Deleted Successfully'
+    })
   })
-  .catch(err=>{
-    res.json(err)
+  .catch(err =>{
+    res.status(500).json(err)
   })
 })
-
-const addFaqIntoLiveServer = (faq, question, answer, chapterName, id)=>{
-  // console.log(respMsg)
-  unirest
-    .post('https://teddibackend.azurewebsites.net/chapterFaq/addChapterWiseFaq')
-    .headers({'Content-Type': 'application/json'})
-    .send({ 
-      "faq": faq,
-      "question": question,
-      "answer": answer,
-      "chapterName": chapterName
-    })
-    .then(async(response) => {
-        console.log('success id: '+id)  
-    })
-    .catch(err => {
-        console.log("err id: "+id)
-    })
-}
 
 module.exports = router;

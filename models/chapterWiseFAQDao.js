@@ -60,6 +60,12 @@ class chapterWiseFaqDao {
     const { resource } = await this.container.item(itemId, partitionKey).read()
     return resource
   }
+
+  async deleteSingleFaq(id){
+    const { resource } = await this.container.item(id, partitionKey).delete();
+    console.log(`Deleted FAQ item with id: ${id}`);
+    return id
+  }
 }
 
 module.exports = chapterWiseFaqDao
