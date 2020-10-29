@@ -138,7 +138,10 @@ router.post('/login',[
 })
 
 router.post('/addUser', [
-  check('conversationId','Conversation Id is required').not().isEmpty()
+  check('conversationId','Conversation Id is required').not().isEmpty(),
+  check('lat','Latitude value is required').not().isEmpty(),
+  check('long','Longitude value is required').not().isEmpty(),
+  check('zip_code','Zip code is required').not().isEmpty(),
 ], async(req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -386,6 +389,42 @@ router.get('/getUsersList', async(req, res)=>{
     }
   }catch(err){
     res.json(err)
+  }
+})
+
+router.put('/updateLatLongOfExistingUser', [
+  check('conversationId','Conversation Id is required').not().isEmpty(),
+  check('lat','Latitude value is required').not().isEmpty(),
+  check('long','Longitude value is required').not().isEmpty(),
+  check('zip_code','Zip code is required').not().isEmpty(),
+], async(req,res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  try{
+    var userData = await userList.checkConversationId(req, res);
+    if(userData.length>0){
+      req.body.id = userData[0].id;
+      var updateData = await userList.updateLatLongOfExistingUser(req, res);
+      res.status(200).json({
+        status:200,
+        msg:'Updated Successfully'
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'Invalid Conversation Id'
+      })
+    }
+  }catch(e){
+    res.status(400).json({
+      status:400,
+      msg:'Oops!! Something Went Wrong.'
+    })
   }
 })
 

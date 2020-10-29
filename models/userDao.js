@@ -58,7 +58,7 @@ class UserDao {
     item.child_data = []
     item.parent_age_range = ''
     item.parent_gender = ''
-    item.zip_code = ''
+    // item.zip_code = ''
     item.occupation = ''
     item.ethnicityMaster = ''
     item.ethnicityChild = ''
@@ -196,6 +196,17 @@ class UserDao {
     doc.ethnicityMaster = req.body.ethnicityMaster
     doc.ethnicityChild = req.body.ethnicityChild
 
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async updateLatLongOfExistingUser(itemId,req){
+    const doc = await this.getItem(itemId);
+    doc.lat = req.body.lat
+    doc.long = req.body.long
+    doc.zip_code = req.body.zip_code
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)

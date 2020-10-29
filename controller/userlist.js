@@ -85,6 +85,12 @@ const UserDao = require("../models/userDao");
     return items
   }
 
+  async updateLatLongOfExistingUser(req, res) {
+    const id = req.body.id;
+    var data = await this.userDao.updateLatLongOfExistingUser(id,req);
+    return data;
+  }
+
  }
 
  module.exports = UserList;
