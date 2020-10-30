@@ -44,7 +44,7 @@ const UserDao = require("../models/userDao");
 
   async checkConversationId(req, res) {
     const querySpec = {
-      query: "SELECT * FROM users u WHERE u.conversationId = '"+req.body.conversationId+"'"
+      query: "SELECT * FROM users u WHERE u.conversationId = '"+req.query.conversationId+"'"
     };
 
     const items = await this.userDao.find(querySpec);
