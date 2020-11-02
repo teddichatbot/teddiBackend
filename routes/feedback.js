@@ -66,7 +66,8 @@ router.post('/addFeedback', [
   feedbacklist.addFeedback(req, res).then(async(addData)=>{
     
     try{
-      var userData = await userList.checkConversationId(req, res);
+      let conversationId = req.body.conversationId;
+      var userData = await userList.checkConversationId(conversationId);
       var giveFeedback = await userList.giveFeedback(userData[0].id);
       res.status(200).json({
         status:200,

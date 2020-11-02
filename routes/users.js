@@ -64,7 +64,8 @@ router.put('/registration', [
           msg:'Email id already registered'
         })
       }else{
-        var userData = await userList.checkConversationId(req, res);
+        let conversationId = req.body.conversationId;
+        var userData = await userList.checkConversationId(conversationId);
         if(userData.length>0){
           req.body.id = userData[0].id
           req.body.password = passwordHash.generate(req.body.password);
@@ -151,7 +152,8 @@ router.post('/addUser', [
     })
   }
 
-  var checkConversationId = await userList.checkConversationId(req, res);
+  let conversationId = req.body.conversationId;
+  var checkConversationId = await userList.checkConversationId(conversationId);
   if(checkConversationId.length>0){
     res.status(400).json({
       status:400,
@@ -254,7 +256,8 @@ router.post('/resetPassword',[
 
 router.post('/setName', async(req, res)=>{
   try{
-    var userData = await userList.checkConversationId(req, res);
+    let conversationId = req.body.conversationId;
+    var userData = await userList.checkConversationId(conversationId);
     if(userData.length>0){
       // req.body.id = userData[0].id;
       userList.setName(userData[0].id, req.body.fname, req.body.lname).then(async(getData)=>{
@@ -290,7 +293,8 @@ router.get('/getSingleUser',[
   }
 
   try{
-    var userData = await userList.checkConversationId(req, res);
+    let conversationId = req.query.conversationId;
+    var userData = await userList.checkConversationId(conversationId);
     if(userData.length>0){
       res.status(200).json({
         status:200,
@@ -328,7 +332,8 @@ router.put('/updateUserProfile', [
     })
   }
   try{
-    var userData = await userList.checkConversationId(req, res);
+    let conversationId = req.body.conversationId;
+    var userData = await userList.checkConversationId(conversationId);
     if(userData.length>0){
       req.body.id = userData[0].id;
       var updateData = await userList.updateUserDetails(req, res);
@@ -406,7 +411,9 @@ router.put('/updateLatLongOfExistingUser', [
     })
   }
   try{
-    var userData = await userList.checkConversationId(req, res);
+    let conversationId = req.body.conversationId;
+    var userData = await userList.checkConversationId(conversationId);
+    // console.log(userData)
     if(userData.length>0){
       req.body.id = userData[0].id;
       var updateData = await userList.updateLatLongOfExistingUser(req, res);
