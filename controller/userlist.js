@@ -91,6 +91,11 @@ const UserDao = require("../models/userDao");
     return data;
   }
 
+  async updateLastActiveTime(itemId) {
+    var data = await this.userDao.updateLastActiveTime(itemId);
+    return data;
+  }
+
  }
 
  module.exports = UserList;

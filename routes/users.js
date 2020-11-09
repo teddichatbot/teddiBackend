@@ -296,6 +296,7 @@ router.get('/getSingleUser',[
     let conversationId = req.query.conversationId;
     var userData = await userList.checkConversationId(conversationId);
     if(userData.length>0){
+      await userList.updateLastActiveTime(userData[0].id);
       res.status(200).json({
         status:200,
         userData: userData[0]

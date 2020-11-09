@@ -213,6 +213,15 @@ class UserDao {
     return replaced
   }
 
+  async updateLastActiveTime(itemId){
+    const doc = await this.getItem(itemId);
+    doc.convEndTime = Date.now()
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
   async giveFeedback(itemId) {
     const doc = await this.getItem(itemId)
     doc.giveFeedback = true
