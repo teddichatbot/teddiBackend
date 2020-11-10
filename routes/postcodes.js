@@ -170,5 +170,23 @@ router.get('/getSinglePostcodeDetails', [
 
 // })
 
+router.get('/getAllPostcodeFiles', (req,res)=>{
+  postcodeslist.getAllPostcodes(req, res).then(getData=>{
+    let list = []
+    getData.map(data=>{
+    //   console.log(data.country)
+      if(list.indexOf(data.location)== -1){
+          list.push(data.location)
+      }
+    })
+    res.status(200).json({
+      status:200,
+      fileList: list
+    })
+  })
+  .catch(err =>{
+    res.json(err)
+  })
+})
 
 module.exports = router;
