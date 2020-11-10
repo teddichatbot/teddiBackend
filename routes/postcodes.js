@@ -174,7 +174,6 @@ router.get('/getAllPostcodeFiles', (req,res)=>{
   postcodeslist.getAllPostcodes(req, res).then(getData=>{
     let list = []
     getData.map(data=>{
-    //   console.log(data.country)
       if(list.indexOf(data.location)== -1){
           list.push(data.location)
       }
