@@ -20,7 +20,7 @@ const PostcodesDao = require("../models/postcodesDao");
       postcode: req.body.postcode,
       location: req.body.location
     };
-    console.log('item',item)
+    // console.log('item',item)
     var data = await this.postcodesDao.addItem(item);
    return data;
   }
