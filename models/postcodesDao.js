@@ -43,6 +43,12 @@ class PostcodesDao {
     const { resource: doc } = await this.container.items.create(item)
     return doc
   }
+
+  async deletePostcode(id){
+    const { resource } = await this.container.item(id, partitionKey).delete();
+    console.log(`Deleted item with id: ${id}`);
+    return id
+  }
 }
 
 module.exports = PostcodesDao

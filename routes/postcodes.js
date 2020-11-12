@@ -96,9 +96,8 @@ router.post('/addBulkPostcodes', upload.single('file'), (req, res)=>{
 })
 
 const addOneByOnePostcodes = async(req, res)=>{
-  // console.log(req.body.postcode+'-'+req.body.location);
   await postcodeslist.addPostcodeForBulkInsert(req, res).then(addData=>{
-    console.log("addData", addData.postcode)
+    // console.log("addData", addData.postcode)
   })
   .catch(err =>{
     console.log(err)
@@ -184,6 +183,53 @@ router.get('/getAllPostcodeFiles', (req,res)=>{
     })
   })
   .catch(err =>{
+    res.json(err)
+  })
+})
+
+router.get('/getAllPostcodesByFile',[
+  check('location','Location is required').not().isEmpty(),
+], (req,res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  postcodeslist.getAllPostcodesByLocation(req, res).then(getData=>{
+    res.status(200).json({
+      status:200,
+      count: getData.length,
+      postcodeList: getData
+    })
+  })
+  .catch(err =>{
+    res.json(err)
+  })
+})
+
+router.delete('/deleteFileWithPostcodes',[
+  check('location','Location is required').not().isEmpty(),
+], (req,res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+
+  postcodeslist.getAllPostcodesByLocation(req, res).then(async(result)=>{
+    
+    for(var i=0; i<result.length; i++){
+      await postcodeslist.deletePostcode(result[i].id)
+      console.log('length',i);
+    }
+    console.log('All data deleted');
+    res.json('All data deleted')
+  })
+  .catch(err=>{
     res.json(err)
   })
 })

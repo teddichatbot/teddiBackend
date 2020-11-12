@@ -52,6 +52,20 @@ const PostcodesDao = require("../models/postcodesDao");
       return items
    }
 
+   async getAllPostcodesByLocation(req, res) {
+    const querySpec = {
+      query: "SELECT * FROM postcodes q WHERE q.location='"+req.query.location+"'"
+    };
+
+    const items = await this.postcodesDao.find(querySpec);
+    return items
+   }
+
+   async deletePostcode(id){
+    var data = await this.postcodesDao.deletePostcode(id);
+    return data;
+  }
+
  }
 
  module.exports = PostcodesList;
