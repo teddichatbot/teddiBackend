@@ -436,4 +436,25 @@ router.put('/updateLatLongOfExistingUser', [
   }
 })
 
+router.get('/getUsersListByPostcode',[
+  check('zip_code','Zip code is required').not().isEmpty(),
+], async(req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  try{
+    var userData = await userList.getUsersListByPostcode(req, res);
+    res.status(200).json({
+      status:200,
+      userData: userData
+    })
+  }catch(err){
+    res.json(err)
+  }
+})
+
 module.exports = router;

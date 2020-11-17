@@ -76,6 +76,15 @@ const UserDao = require("../models/userDao");
     return items
   }
 
+  async getUsersListByPostcode(req, res) {
+    const querySpec = {
+      query: "SELECT * FROM users u WHERE u.zip_code ='"+req.query.zip_code+"'"
+    };
+
+    const items = await this.userDao.find(querySpec);
+    return items
+  }
+
   async giveFeedbackUsersList(req, res) {
     const querySpec = {
       query: "SELECT * FROM users u WHERE u.giveFeedback=true"
