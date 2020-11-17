@@ -135,7 +135,7 @@ router.get('/getSinglePostcodeDetails', [
         postcodeData: getData[0]
       })
     }else{
-      res.status(400).json({
+      res.status(200).json({
         status:400,
         msg: 'No data found'
       })
