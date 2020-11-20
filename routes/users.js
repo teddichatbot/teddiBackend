@@ -457,4 +457,25 @@ router.get('/getUsersListByPostcode',[
   }
 })
 
+router.post('/iosReceiptValidator', (req, res)=>{
+  unirest
+    .post(process.env.IOS_VALIDATOR_URL)
+    .headers({'Content-Type': 'application/json'})
+    .send({ 
+      "receipt-data": req.body.appReceipt,
+      "password": '3974dc4c76034bd8ba85a31da0fe2751',
+      "exclude-old-transactions": true
+    })
+    .then(async(response) => {
+        // console.log(response.body)
+        res.status(200).json({
+          data: response.body
+        })
+    })
+    .catch(err => {
+      console.log('dsds')
+      console.log(err)
+    })
+})
+
 module.exports = router;

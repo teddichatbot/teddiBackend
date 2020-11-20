@@ -104,6 +104,11 @@ const UserDao = require("../models/userDao");
     var data = await this.userDao.updateLastActiveTime(itemId);
     return data;
   }
+  
+  async updateAccessEnabledBy(itemId) {
+    var data = await this.userDao.updateAccessEnabledBy(itemId);
+    return data;
+  }
 
  }
 

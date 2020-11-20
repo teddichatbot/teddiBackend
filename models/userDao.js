@@ -222,6 +222,15 @@ class UserDao {
     return replaced
   }
 
+  async updateAccessEnabledBy(itemId){
+    const doc = await this.getItem(itemId);
+    doc.accessEnabledBy = 'postcode'
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
   async giveFeedback(itemId) {
     const doc = await this.getItem(itemId)
     doc.giveFeedback = true

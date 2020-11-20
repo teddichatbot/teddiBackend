@@ -9,12 +9,28 @@ const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
 const Postcodeslist = require('../controller/postcodeslist')
 const PostcodesDao = require('../models/postcodesDao')
+const UserList = require('../controller/userlist')
+const UserDao = require('../models/userDao')
 
 //Todo App:
 const postcodesDao = new PostcodesDao(cosmosClient, config.databaseId, config.containerPostcodeId)
 const postcodeslist = new Postcodeslist(postcodesDao)
+const userDao = new UserDao(cosmosClient, config.databaseId, config.containerUserId)
+const userList = new UserList(userDao)
 
 postcodesDao
+  .init(err => {
+    console.error(err)
+  })
+  .catch(err => {
+    console.error(err)
+    console.error(
+      'Shutting down because there was an error settinig up the database.'
+    )
+    process.exit(1)
+  })
+
+userDao
   .init(err => {
     console.error(err)
   })
@@ -230,6 +246,43 @@ router.delete('/deleteFileWithPostcodes',[
     res.json('All data deleted')
   })
   .catch(err=>{
+    res.json(err)
+  })
+})
+
+router.get('/getPostcodeDetailsWithAccessEnabledBy', [
+  check('postcode','Postcode is required').not().isEmpty(),
+  check('conversationId','Conversation Id is required').not().isEmpty(),
+], (req,res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  postcodeslist.getSinglePostcodeDetails(req, res).then(async(getData)=>{
+    if(getData.length > 0){
+      var checkConversationId = await userList.checkConversationId(req.query.conversationId);
+      
+      if(checkConversationId.length > 0){
+        await userList.updateAccessEnabledBy(checkConversationId[0].id)
+        res.status(200).json({
+          postcodeData: getData[0]
+        })
+      }else{
+        res.status(200).json({
+          msg: 'Invalid Conversation Id'
+        })
+      }     
+    }else{
+      res.status(200).json({
+        msg: 'No postcode data found'
+      })
+    }
+    
+  })
+  .catch(err =>{
     res.json(err)
   })
 })
