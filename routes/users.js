@@ -478,4 +478,38 @@ router.post('/iosReceiptValidator', (req, res)=>{
     })
 })
 
+router.put('/updateAccessEnabledBy', [
+  check('conversationId','Conversation Id is required').not().isEmpty(),
+], async(req,res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  try{
+    let conversationId = req.body.conversationId;
+    var userData = await userList.checkConversationId(conversationId);
+    // console.log(userData)
+    if(userData.length>0){
+      // req.body.id = userData[0].id;
+      var updateData = await userList.updateAccessEnabledBy(userData[0].id, 'inapppurchase');
+      res.status(200).json({
+        status:200,
+        msg:'Updated Successfully'
+      })
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'Invalid Conversation Id'
+      })
+    }
+  }catch(e){
+    res.status(500).json({
+      msg:'Oops!! Something Went Wrong.'
+    })
+  }
+})
+
 module.exports = router;

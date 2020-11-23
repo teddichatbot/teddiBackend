@@ -222,9 +222,13 @@ class UserDao {
     return replaced
   }
 
-  async updateAccessEnabledBy(itemId){
+  async updateAccessEnabledBy(itemId, chkParam){
     const doc = await this.getItem(itemId);
-    doc.accessEnabledBy = 'postcode'
+    if(chkParam == 'inapppurchase'){
+      doc.accessEnabledBy = 'inapppurchase'
+    }else{
+      doc.accessEnabledBy = 'postcode'
+    }   
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)

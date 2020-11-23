@@ -105,8 +105,8 @@ const UserDao = require("../models/userDao");
     return data;
   }
   
-  async updateAccessEnabledBy(itemId) {
-    var data = await this.userDao.updateAccessEnabledBy(itemId);
+  async updateAccessEnabledBy(itemId, chkParam) {
+    var data = await this.userDao.updateAccessEnabledBy(itemId, chkParam);
     return data;
   }
 
