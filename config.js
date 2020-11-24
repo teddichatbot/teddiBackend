@@ -13,6 +13,7 @@ config.containerChapterWiseFaqId = "chapterFaq";
 config.containerUserSessionId = "botdata";
 config.containerPostcodeId = "postcodes";
 config.containerFeedbackId = "feedback";
+config.containerFeedbackQAId = "feedbackQA";
 config.containerCategoryId = "category";
 config.containerRecipesId = "recipes";
 config.containerRandomMsgId = "randomMessages";
