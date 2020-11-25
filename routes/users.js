@@ -140,9 +140,9 @@ router.post('/login',[
 
 router.post('/addUser', [
   check('conversationId','Conversation Id is required').not().isEmpty(),
-  check('lat','Latitude value is required').not().isEmpty(),
-  check('long','Longitude value is required').not().isEmpty(),
-  check('zip_code','Zip code is required').not().isEmpty(),
+  // check('lat','Latitude value is required').not().isEmpty(),
+  // check('long','Longitude value is required').not().isEmpty(),
+  // check('zip_code','Zip code is required').not().isEmpty(),
 ], async(req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
