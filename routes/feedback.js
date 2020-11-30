@@ -62,8 +62,8 @@ router.post('/addFeedback', [
   if(!req.body.isSmiled){
     req.body.isSmiled = ''
   }
-  if(!req.body.answer){
-    req.body.answer = ''
+  if(!req.body.qa){
+    req.body.qa = []
   }
 
   feedbacklist.addFeedback(req, res).then(async(addData)=>{
