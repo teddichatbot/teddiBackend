@@ -65,12 +65,12 @@ router.get('/getFeedbackQAbyChapter',[
   check('chapter','Chapter is required').not().isEmpty(),
 ], (req,res)=>{
   feedbackQAlist.getQAbyChapter(req, res).then(getData=>{
-    if(getData.length>0){
-      res.status(200).json(getData[0])
-    }else{
-      res.status(200).json({ msg: 'No data found' })
-    }
-    
+    // if(getData.length>0){
+    //   res.status(200).json(getData)
+    // }else{
+    //   res.status(200).json({ msg: 'No data found' })
+    // }
+    res.status(200).json(getData)
   })
   .catch(err =>{
     res.status(400).json(err)
