@@ -2,7 +2,8 @@
 const CosmosClient = require('@azure/cosmos').CosmosClient
 
 // For simplicity we'll set a constant partition key
-const partitionKey = { paths: ["/id"] }
+const partitionKey = undefined
+// const partitionKey = { paths: ["/id"] }
 class BotdataDao {
   /**
    * Manages reading, adding, and updating Tasks in Cosmos DB
@@ -25,7 +26,8 @@ class BotdataDao {
     })
     this.database = dbResponse.database
     const coResponse = await this.database.containers.createIfNotExists({
-      id: this.collectionId, partitionKey
+      id: this.collectionId
+      // id: this.collectionId, partitionKey
     })
     this.container = coResponse.container
   }
