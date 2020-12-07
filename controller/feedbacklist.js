@@ -34,6 +34,19 @@ const FeedbackDao = require("../models/feedbackDao");
       return items
    }
 
+   async getUserFeedbackOfASingleChapter(req, res){
+    const querySpec = {
+      query: "SELECT * FROM feedback c WHERE c.conversationId = '"+req.body.conversationId+"' AND c.chapterType='"+req.body.chapterType+"'"
+    };
+    // console.log(querySpec)
+    const items = await this.feedbackDao.find(querySpec);
+    return items
+  }
+  async updateFeedback(itemId, payload) {
+    var data = await this.feedbackDao.updateItem(itemId,payload);
+    return data;
+  }
+
  }
 
  module.exports = FeedbackList;

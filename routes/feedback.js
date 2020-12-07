@@ -66,8 +66,35 @@ router.post('/addFeedback', [
     req.body.qa = []
   }
 
-  feedbacklist.addFeedback(req, res).then(async(addData)=>{
-    
+  if(req.body.chapterType == 'global'){
+    addFeedbackFunc(req, res)
+  }else{
+    try{
+      let feedbackData = await feedbacklist.getUserFeedbackOfASingleChapter(req,res);
+      
+      if(feedbackData.length>0){
+        await feedbacklist.updateFeedback(feedbackData[0].id, req.body);
+        let getData = await feedbacklist.getUserFeedbackOfASingleChapter(req,res);
+        res.status(200).json({
+          status:200,
+          msg:'Updated feedback Successfully',
+          feedbackData: getData[0]
+        })
+      }else{
+        addFeedbackFunc(req, res)
+      }
+    }catch(err){
+      res.json(err)
+    }
+  }
+  // await feedbacklist.getUserFeedbackOfASingleChapter(req,res);
+
+  
+})
+
+async function addFeedbackFunc(req, res){
+
+  feedbacklist.addFeedback(req, res).then(async(addData)=>{ 
     try{
       let conversationId = req.body.conversationId;
       var userData = await userList.checkConversationId(conversationId);
@@ -86,7 +113,7 @@ router.post('/addFeedback', [
   .catch(err =>{
     res.json(err)
   })
-})
+}
 
 
 router.get('/getAllFeedback', (req,res)=>{
@@ -129,5 +156,35 @@ router.get('/getFeedbackByUser/:catrgotyId', async(req, res)=>{
   }
 })
 
+router.post('/findUserFeedbackOfASingleChapter', [
+  check('conversationId','Conversation Id is required').not().isEmpty(),
+  check('chapterType','Chapter Type is required').not().isEmpty(),
+], async(req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+
+  try{
+    let feedbackData = await feedbacklist.getUserFeedbackOfASingleChapter(req,res);
+    if(feedbackData.length>0){
+      res.status(200).json({
+        status:200,
+        feedbackData: feedbackData[0]
+      })
+    }else{
+      res.status(200).json({
+        msg: 'No data found'
+      })
+    }
+    
+  }catch(err){
+    res.json(err)
+  }
+
+})
 
 module.exports = router;

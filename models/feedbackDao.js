@@ -43,6 +43,24 @@ class FeedbackDao {
     const { resource: doc } = await this.container.items.create(item)
     return doc
   }
+
+  async updateItem(itemId, payload) {
+    const doc = await this.getItem(itemId)
+    
+    doc.feedbackMsg = payload.feedbackMsg;
+    doc.isSmiled = payload.isSmiled;
+    doc.qa = payload.qa;
+    
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async getItem(itemId) {
+    const { resource } = await this.container.item(itemId, partitionKey).read()
+    return resource
+  }
 }
 
 module.exports = FeedbackDao
