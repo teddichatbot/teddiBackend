@@ -8,14 +8,14 @@ router.get('/', function(req, res, next) {
 router.get('/checkVersion', (req,res)=>{
   let payload = {
     android: {
-      version: '0.0.1',
-      storeUrl: 'https://play.google.com/store/apps/details?id=com.AskTeddi.Solutions4Health',
+      version: '0.0.2',
+      storeUrl: 'market://details?id=com.AskTeddi.Solutions4Health',
       forceUpdate: true
     },
     ios: {
-      version: '1.0',
-      storeUrl: 'https://apps.apple.com/us/app/id1531123323',
-      forceUpdate: false
+      version: '0.2',
+      storeUrl: 'itms-apps://apps.apple.com/us/app/id1531123323',
+      forceUpdate: true
     },
   }
   res.json(payload)
