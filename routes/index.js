@@ -16,7 +16,7 @@ router.get('/checkVersion', (req,res)=>{
       storeUrl: 'https://apps.apple.com/us/app/id1531123323',
     },
   }
-  res.send(payload)
+  res.json(payload)
 })
 
 module.exports = router;
