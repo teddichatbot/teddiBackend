@@ -47,6 +47,14 @@ const FeedbackDao = require("../models/feedbackDao");
     return data;
   }
 
+  async getListForExporting(req, res) {
+    const querySpec = {
+      query: "SELECT * FROM feedback q WHERE q.chapterType='"+req.body.chapterType+"' AND q.createdOn>='"+req.body.startDate+"' AND q.createdOn<='"+req.body.endDate+"'"
+    };
+    const items = await this.feedbackDao.find(querySpec);
+    return items
+   }
+
  }
 
  module.exports = FeedbackList;

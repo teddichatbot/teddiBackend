@@ -187,4 +187,27 @@ router.post('/findUserFeedbackOfASingleChapter', [
 
 })
 
+router.post('/getFeedbacklistForExporting',[
+  check('chapterType','Chapter Type is required').not().isEmpty(),
+  check('startDate','Start Date is required').not().isEmpty(),
+  check('endDate','End Date is required').not().isEmpty(),
+], async(req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  feedbacklist.getListForExporting(req, res).then(getData=>{
+    res.status(200).json({
+      status:200,
+      feedbackList: getData
+    })
+  })
+  .catch(err =>{
+    res.json(err)
+  })
+})
+
 module.exports = router;
