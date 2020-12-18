@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 router.get('/checkVersion', (req,res)=>{
   let payload = {
     android: {
-      version: '0.0.2',
+      version: '0.0.3',
       storeUrl: 'market://details?id=com.AskTeddi.Solutions4Health',
       forceUpdate: true
     },
