@@ -457,9 +457,22 @@ router.get('/getUsersListByPostcode',[
   }
 })
 
-router.post('/iosReceiptValidator', (req, res)=>{
+router.post('/iosReceiptValidator', [
+  check('isSandbox','isSandbox field is required').not().isEmpty()
+ ], (req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  
+  let iosValidatorURL =  (req.body.isSandbox === 'true')? 'https://sandbox.itunes.apple.com/verifyReceipt':'https://buy.itunes.apple.com/verifyReceipt';
+  
   unirest
-    .post(process.env.IOS_VALIDATOR_URL)
+    // .post(process.env.IOS_VALIDATOR_URL)
+    .post(iosValidatorURL)
     .headers({'Content-Type': 'application/json'})
     .send({ 
       "receipt-data": req.body.appReceipt,
@@ -467,7 +480,6 @@ router.post('/iosReceiptValidator', (req, res)=>{
       "exclude-old-transactions": true
     })
     .then(async(response) => {
-        // console.log(response.body)
         res.status(200).json({
           data: response.body
         })
