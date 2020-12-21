@@ -287,4 +287,23 @@ router.get('/getPostcodeDetailsWithAccessEnabledBy', [
   })
 })
 
+router.delete('/deletePostcode',[
+  check('postcodeId','Postcode Id is required').not().isEmpty(),
+], (req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  postcodeslist.deletePostcode(req.query.postcodeId).then(result=>{
+    console.log(result)
+    res.status(200).json({
+      status:200,
+      msg:'Postcode Deletd Successfully',
+    })
+  })
+})
+
 module.exports = router;
