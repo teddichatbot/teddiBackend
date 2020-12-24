@@ -10,12 +10,28 @@ const cosmosClient = require('../cosmosConnection')
 const config = require('../config')
 const UserList = require('../controller/userlist')
 const UserDao = require('../models/userDao')
+const BotDataList = require('../controller/botdataList')
+const BotDataDao = require('../models/botDataDao')
 
 //Todo App:
 const userDao = new UserDao(cosmosClient, config.databaseId, config.containerUserId)
 const userList = new UserList(userDao)
+const botDataDao = new BotDataDao(cosmosClient, config.databaseId, config.containerUserSessionId)
+const botDataList = new BotDataList(botDataDao)
 
 userDao
+  .init(err => {
+    console.error(err)
+  })
+  .catch(err => {
+    console.error(err)
+    console.error(
+      'Shutting down because there was an error settinig up the database.'
+    )
+    process.exit(1)
+  })
+
+botDataDao
   .init(err => {
     console.error(err)
   })
@@ -297,11 +313,19 @@ router.get('/getSingleUser',[
     var userData = await userList.checkConversationId(conversationId);
     if(userData.length>0){
       await userList.updateLastActiveTime(userData[0].id);
-      res.status(200).json({
-        status:200,
-        userData: userData[0]
-      })
-      
+      let countDays = await botDataList.lastChatDaysCount(req, res)
+      if(countDays>14){
+        res.status(200).json({
+          status:200,
+          directlineStatus:'Expired',
+          userData: userData[0]
+        })
+      }else{
+        res.status(200).json({
+          status:200,
+          userData: userData[0]
+        })
+      } 
     }else{
       res.status(400).json({
         status:400,

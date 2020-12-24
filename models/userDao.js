@@ -215,6 +215,8 @@ class UserDao {
 
   async updateLastActiveTime(itemId){
     const doc = await this.getItem(itemId);
+    var dateNow = new Date()
+    doc.convEndDate = dateNow.getDate() +"-"+ (dateNow.getMonth() + 1) +"-"+ dateNow.getFullYear()
     doc.convEndTime = Date.now()
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)

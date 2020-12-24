@@ -41,6 +41,16 @@ const BotDataDao = require("../models/botDataDao");
     return data;
   }
 
+  async lastChatDaysCount(req, res) {
+    const querySpec = {
+      query: "SELECT * FROM botdata c WHERE c.document.userInfo.conversationId = '"+req.query.conversationId+"'"
+    };
+
+    const items = await this.botDataDao.find(querySpec);
+    let daysdiff = parseInt((Date.now() - items[0].document.userInfo.convLastTime)/(1000*86400))
+    return daysdiff
+  }
+
  }
 
  module.exports = BotDataList;
