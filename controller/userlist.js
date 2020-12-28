@@ -94,9 +94,11 @@ const UserDao = require("../models/userDao");
     return items
   }
 
-  async updateLatLongOfExistingUser(req, res) {
+  // async updateLatLongOfExistingUser(req, res) {
+  async addNewParamsOfExistingUser(req, res) {
     const id = req.body.id;
-    var data = await this.userDao.updateLatLongOfExistingUser(id,req);
+    // var data = await this.userDao.updateLatLongOfExistingUser(id,req);
+    var data = await this.userDao.addNewParamsOfExistingUser(id,req);
     return data;
   }
 

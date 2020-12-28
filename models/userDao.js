@@ -202,11 +202,13 @@ class UserDao {
     return replaced
   }
 
-  async updateLatLongOfExistingUser(itemId,req){
+  // async updateLatLongOfExistingUser(itemId,req){
+  async addNewParamsOfExistingUser(itemId,req){
     const doc = await this.getItem(itemId);
     doc.lat = req.body.lat
     doc.long = req.body.long
     doc.zip_code = req.body.zip_code
+    doc.fcmToken = req.body.fcmToken
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)
