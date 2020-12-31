@@ -63,6 +63,7 @@ class UserDao {
     item.ethnicityMaster = ''
     item.ethnicityChild = ''
     item.giveFeedback = false
+    item.notificationEnabled = true
     const { resource: doc } = await this.container.items.create(item)
     return doc
   }
@@ -95,20 +96,8 @@ class UserDao {
   async forgotPassword(itemId) {
     const doc = await this.getItem(itemId)
     var newPasskey = await this.generatePasskey(6);
-    // console.log('newPasskey',newPasskey)
     doc.password = passwordHash.generate(newPasskey);
 
-    // var transporter = nodemailer.createTransport({
-    //     // host: 'mail.lcn.com',
-    //     host: 'smtp.gmail.com',
-    //     port: 587,
-    //     secure: false,
-    //     // service: 'gmail',
-    //     auth: {
-    //         user: 'subhankar.ray@capitalnumbers.com',
-    //         pass: '$Ubha12345CN'
-    //     }
-    // });
     var transporter = nodemailer.createTransport({
       host: "smtp-mail.outlook.com", // hostname
       secureConnection: false, // TLS requires secureConnection to be false
@@ -126,7 +115,6 @@ class UserDao {
       from: '"support@teddi.com" <teddi@solutions4health.co.uk>',
       to: doc.email,
       subject: 'Teddi: Forgot Password!',
-      // html: '<p>Dear '+userName+',</p><p>Your new password is: '+newPasskey+'</p><p>Thanks and Regards,</p><p>Team Bella</p>',
       html: '<p>Your new password is: '+newPasskey+'</p><p>Thanks and Regards,</p><p>Team Teddi</p>',
     };
 
@@ -166,6 +154,7 @@ class UserDao {
 
   async getItem(itemId) {
     const { resource } = await this.container.item(itemId, partitionKey).read()
+    console.log(resource)
     return resource
   }
 
@@ -209,6 +198,10 @@ class UserDao {
     doc.long = req.body.long
     doc.zip_code = req.body.zip_code
     doc.fcmToken = req.body.fcmToken
+    doc.deviceType = req.body.deviceType
+    if(req.body.notificationEnabled){
+      doc.notificationEnabled = req.body.notificationEnabled
+    }
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)
@@ -242,6 +235,18 @@ class UserDao {
   async giveFeedback(itemId) {
     const doc = await this.getItem(itemId)
     doc.giveFeedback = true
+    const { resource: replaced } = await this.container
+      .item(itemId, partitionKey)
+      .replace(doc)
+    return replaced
+  }
+
+  async updateNotificationEnabled(itemId){
+    console.log(itemId)
+    const doc = await this.getItem(itemId);
+    console.log(doc)
+    doc.notificationEnabled = true
+    
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)

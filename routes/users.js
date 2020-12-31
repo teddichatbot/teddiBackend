@@ -429,6 +429,8 @@ router.put('/addNewParamsOfExistingUser', [
   check('long','Longitude value is required').not().isEmpty(),
   check('zip_code','Zip code is required').not().isEmpty(),
   check('fcmToken','FCM token is required').not().isEmpty(),
+  check('deviceType','Device Type is required').not().isEmpty(),
+  // check('notificationEnabled','notificationEnabled is required').not().isEmpty(),
 ], async(req,res)=>{
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -547,6 +549,123 @@ router.put('/updateAccessEnabledBy', [
     res.status(500).json({
       msg:'Oops!! Something Went Wrong.'
     })
+  }
+})
+
+router.post('/reminderAllUserForTeddiExpiration', async(req,res)=>{
+  try{
+    let dataList = await botDataList.reminderAllUserForTeddiExpiration(req, res)
+    let fcmTokenArr = [];
+    for(var i=0; i<dataList.length; i++){
+      var userData = await userList.checkConversationId(dataList[i].conversationId);
+      if(userData[0].fcmToken){
+        fcmTokenArr.push(userData[0].fcmToken)
+      }
+    }
+    
+    let msg = "It looks like you have been away for a while. Teddi is still here to support you. Come on in!"
+    
+    unirest
+    .post('https://fcm.googleapis.com/fcm/send')
+    .headers({'Content-Type': 'application/json', "Authorization": 'key='+process.env.FIREBASE_SERVER_KEY})
+    .send({ 
+      "notification": {
+        "title": "Teddi",
+        "body": msg,
+        "sound": "default",
+        "visibility": 1
+      },
+      "registration_ids": fcmTokenArr
+    })
+    .then((response) => {
+      res.status(200).json(response.body)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }catch(e){
+    res.json(e)
+  }
+})
+
+router.post('/sentDailyNotification', async(req,res)=>{
+  try{
+    let dataList = await userList.getAllFcmListForDailyNotification(req, res)
+    // res.status(200).json(dataList)
+    let msgList = [
+      "The years between birth and starting school are a time of amazing growth and development. I’m here to help 😊 ",
+      "Take some time for yourself too. It’s not always easy. Come on in and talk to me about ‘valuing me’.",
+      "How’s it going, user name?",
+      "Your early years robo support has some helpful advice for you! Come and explore!",
+      "How are you feeling today?",
+      "Early years are an important time to help your child to discover healthy habits. Come on in and find out how!",
+      "Need some support on being active as a family? Come on in and let’s talk about it!",
+      "Need some support on breast or bottle feeding? Come on in and let’s talk about it!",
+      "Would you like to learn about the Healthy Start Scheme or vaccinations? Come on in and explore giving the healthiest start!",
+      "You’re doing great! Take this moment to smile 😊 ",
+      "How are mealtimes? Come on in and explore how eating can be fun and healthy!",
+      "How have the last few days been for you, user name?",
+      "The early years between 0-5 are so important and play a crucial role in laying the foundations for a future healthy life. I’m here to help!",
+      "It may feel like everyone has an opinion on what you should be doing. I can offer evidence-based support on a range of issues and topics. Let’s talk!"
+    ]
+    let getOneMsg = msgList[Math.floor(Math.random() * msgList.length)];
+    for(var i=0; i< dataList.length; i++){
+      var msg = getOneMsg.replace("user name", dataList[i].firstName)
+      // console.log(msg)
+      await sendDailyNotificationToEveryUser(msg, dataList[i].fcmToken)
+    }
+    // console.log('Sent Daily Notification To Every User')
+    res.status(200).json('Sent Daily Notification To Every User')
+  }catch(e){
+    res.json(e)
+  }
+})
+
+var sendDailyNotificationToEveryUser = (msg, fcmToken)=>{
+  unirest
+    .post('https://fcm.googleapis.com/fcm/send')
+    .headers({'Content-Type': 'application/json', "Authorization": 'key='+process.env.FIREBASE_SERVER_KEY})
+    .send({ 
+      "notification": {
+        "title": "Teddi",
+        "body": msg,
+        "sound": "default",
+        "visibility": 1
+      },
+      "to": fcmToken
+    })
+    .then((response) => {
+      console.log(response.body)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
+
+router.post('/updateNotificationEnabled', async(req, res)=>{
+  try{
+    var userData = await userList.getUsersList(req, res);
+    if(userData.length>0){
+      for(var i=0; i<userData.length; i++){
+        if(!userData[i].notificationEnabled){
+          console.log(userData[i].conversationId)
+          await userList.updateNotificationEnabled(userData[i].conversationId);         
+        }
+      }
+      console.log('update all NotificationEnabled to true')
+      res.status(200).json({
+        status:200,
+        msg: 'update all NotificationEnabled to true'
+      })
+      
+    }else{
+      res.status(400).json({
+        status:400,
+        msg:'No data found'
+      })
+    }
+  }catch(err){
+    res.json(err)
   }
 })
 

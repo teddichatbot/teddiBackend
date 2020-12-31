@@ -51,6 +51,18 @@ const BotDataDao = require("../models/botDataDao");
     return daysdiff
   }
 
+  async reminderAllUserForTeddiExpiration(req, res) {
+    const querySpec = {
+      query: "SELECT c.document.userInfo.conversationId, c.document.userInfo.convLastTime FROM c"
+    };
+
+    const items = await this.botDataDao.find(querySpec);
+    let filtereddata = items.filter(data=>{
+      return parseInt((Date.now() - data.convLastTime)/(1000*86400)) > 11 && parseInt((Date.now() - data.convLastTime)/(1000*86400)) < 14
+    })
+    return filtereddata;
+  }
+
  }
 
  module.exports = BotDataList;

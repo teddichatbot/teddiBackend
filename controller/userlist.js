@@ -112,6 +112,22 @@ const UserDao = require("../models/userDao");
     return data;
   }
 
+  async updateNotificationEnabled(itemId) {
+    var data = await this.userDao.updateNotificationEnabled(itemId);
+    return data;
+  }
+
+  async getAllFcmListForDailyNotification(req, res) {
+    const querySpec = {
+      query: "SELECT u.firstName, u.fcmToken FROM users u"
+    };
+    const items = await this.userDao.find(querySpec);
+    let filtereddata = items.filter(data=>{
+      return data.fcmToken
+    })
+    return filtereddata;
+  }
+
  }
 
  module.exports = UserList;
