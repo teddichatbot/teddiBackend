@@ -558,11 +558,11 @@ router.post('/reminderAllUserForTeddiExpiration', async(req,res)=>{
     let fcmTokenArr = [];
     for(var i=0; i<dataList.length; i++){
       var userData = await userList.checkConversationId(dataList[i].conversationId);
-      if(userData[0].fcmToken){
+      if(userData[0].fcmToken && userData[0].notificationEnabled == true){
         fcmTokenArr.push(userData[0].fcmToken)
       }
     }
-    
+    // res.status(200).json(fcmTokenArr)
     let msg = "It looks like you have been away for a while. Teddi is still here to support you. Come on in!"
     
     unirest
@@ -649,7 +649,7 @@ router.post('/updateNotificationEnabled', async(req, res)=>{
       for(var i=0; i<userData.length; i++){
         if(!userData[i].notificationEnabled){
           console.log(userData[i].conversationId)
-          await userList.updateNotificationEnabled(userData[i].conversationId);         
+          await userList.updateNotificationEnabled(userData[i].id);         
         }
       }
       console.log('update all NotificationEnabled to true')

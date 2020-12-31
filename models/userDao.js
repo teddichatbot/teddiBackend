@@ -154,7 +154,6 @@ class UserDao {
 
   async getItem(itemId) {
     const { resource } = await this.container.item(itemId, partitionKey).read()
-    console.log(resource)
     return resource
   }
 
@@ -244,7 +243,6 @@ class UserDao {
   async updateNotificationEnabled(itemId){
     console.log(itemId)
     const doc = await this.getItem(itemId);
-    console.log(doc)
     doc.notificationEnabled = true
     
     const { resource: replaced } = await this.container
