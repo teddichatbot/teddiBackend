@@ -591,7 +591,7 @@ router.post('/reminderAllUserForTeddiExpiration', async(req,res)=>{
 router.post('/sentDailyNotification', async(req,res)=>{
   try{
     let dataList = await userList.getAllFcmListForDailyNotification(req, res)
-    // res.status(200).json(dataList)
+    
     let msgList = [
       "The years between birth and starting school are a time of amazing growth and development. I’m here to help 😊 ",
       "Take some time for yourself too. It’s not always easy. Come on in and talk to me about ‘valuing me’.",

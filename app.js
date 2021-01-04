@@ -20,6 +20,7 @@ var feedbackQARouter = require('./routes/feedbackQA');
 var categoryRouter = require('./routes/category');
 var recipesRouter = require('./routes/recipes');
 var randomMsgRouter = require('./routes/randomMsg');
+var scheduleTaskRouter = require('./scheduleTask');
 
 var app = express();
 app.use(cors())
