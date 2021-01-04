@@ -198,7 +198,7 @@ class UserDao {
     doc.zip_code = req.body.zip_code
     doc.fcmToken = req.body.fcmToken
     doc.deviceType = req.body.deviceType
-    if(req.body.notificationEnabled){
+    if(req.body.notificationEnabled != undefined){
       doc.notificationEnabled = req.body.notificationEnabled
     }
     const { resource: replaced } = await this.container
@@ -241,7 +241,7 @@ class UserDao {
   }
 
   async updateNotificationEnabled(itemId){
-    console.log(itemId)
+    // console.log(itemId)
     const doc = await this.getItem(itemId);
     doc.notificationEnabled = true
     
