@@ -635,6 +635,7 @@ var sendDailyNotificationToEveryUser = (msg, fcmToken)=>{
       "to": fcmToken
     })
     .then((response) => {
+      console.log(fcmToken)
       console.log(response.body)
     })
     .catch(error => {
