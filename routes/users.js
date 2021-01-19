@@ -431,6 +431,7 @@ router.put('/addNewParamsOfExistingUser', [
   check('fcmToken','FCM token is required').not().isEmpty(),
   check('deviceType','Device Type is required').not().isEmpty(),
   // check('notificationEnabled','notificationEnabled is required').not().isEmpty(),
+  // check('biometricEnabled','biometricEnabled is required').not().isEmpty(),
 ], async(req,res)=>{
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -668,6 +669,27 @@ router.post('/updateNotificationEnabled', async(req, res)=>{
   }catch(err){
     res.json(err)
   }
+})
+
+router.delete('/deleteSingleuser',[
+  check('userId','User Id is required').not().isEmpty(),
+], (req, res)=>{
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ 
+      status:422,
+      errors: errors.array() 
+    })
+  }
+  userList.deleteUser(req.query.userId).then(succres=>{
+    res.status(200).json({
+      status:200,
+      msg: 'Deleted Successfully.'
+    })
+  })
+  .catch(err=>{
+    res.json(err)
+  })
 })
 
 module.exports = router;

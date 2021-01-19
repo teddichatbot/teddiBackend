@@ -129,6 +129,11 @@ const UserDao = require("../models/userDao");
     return filtereddata;
   }
 
+  async deleteUser(id){
+    var data = await this.userDao.deleteUser(id);
+    return data;
+  }
+
  }
 
  module.exports = UserList;

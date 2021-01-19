@@ -201,6 +201,9 @@ class UserDao {
     if(req.body.notificationEnabled != undefined){
       doc.notificationEnabled = req.body.notificationEnabled
     }
+    if(req.body.biometricEnabled != undefined){
+      doc.biometricEnabled = req.body.biometricEnabled
+    }
     const { resource: replaced } = await this.container
       .item(itemId, partitionKey)
       .replace(doc)
@@ -249,6 +252,12 @@ class UserDao {
       .item(itemId, partitionKey)
       .replace(doc)
     return replaced
+  }
+
+  async deleteUser(id){
+    const { resource } = await this.container.item(id, partitionKey).delete();
+    console.log(`Deleted item with id: ${id}`);
+    return id
   }
 }
 
