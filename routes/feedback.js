@@ -210,4 +210,18 @@ router.post('/getFeedbacklistForExporting',[
   })
 })
 
+router.post('/feedBackListByConvIds', async(req, res)=>{
+  try{
+    let feedbackData = await feedbacklist.feedBackListByConvIds(req,res);
+    // let appFeedBack = feedbackData.filter(data => data.chapterType == 'global')
+    let chatFeedBack = feedbackData.filter(data => data.chapterType !== 'global')
+    res.status(200).json({
+      status:200,
+      feedbackData: chatFeedBack
+    })
+  }catch(err){
+    res.json(err)
+  }
+})
+
 module.exports = router;

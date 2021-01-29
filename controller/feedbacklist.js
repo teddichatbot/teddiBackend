@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const FeedbackDao = require("../models/feedbackDao");
 
  class FeedbackList {
@@ -53,8 +54,17 @@ const FeedbackDao = require("../models/feedbackDao");
     };
     const items = await this.feedbackDao.find(querySpec);
     return items
-   }
+  }
 
+  async feedBackListByConvIds(req, res) {
+    let convIds = JSON.stringify(req.body.convIds)
+    const querySpec = {
+      query: "SELECT * FROM feedback q WHERE ARRAY_CONTAINS("+convIds+" ,q.conversationId)"
+    };
+
+    const items = await this.feedbackDao.find(querySpec);
+    return items
+  }
  }
 
  module.exports = FeedbackList;
