@@ -497,7 +497,7 @@ router.post('/iosReceiptValidator', [
     })
   }
   
-  let iosValidatorURL =  (req.body.isSandbox === 'true')? 'https://sandbox.itunes.apple.com/verifyReceipt':'https://buy.itunes.apple.com/verifyReceipt';
+  let iosValidatorURL =  (req.body.isSandbox === true)? 'https://sandbox.itunes.apple.com/verifyReceipt':'https://buy.itunes.apple.com/verifyReceipt';
   
   unirest
     // .post(process.env.IOS_VALIDATOR_URL)
