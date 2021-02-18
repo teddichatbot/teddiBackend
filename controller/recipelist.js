@@ -37,6 +37,17 @@ const RecipesDao = require("../models/recipesDao");
     return items
   }
 
+  async searchRecipes(req, res) {
+    var sql = 'SELECT * FROM recipes r WHERE CONTAINS(r.recipeName, "'+req.query.searchWord+'", true)'
+    console.log(sql)
+
+    const querySpec = {
+      query: sql
+    };
+    const items = await this.recipesDao.find(querySpec);
+    return items
+  }
+
   async getSingleRecipe(req, res){
     var sql = 'SELECT * FROM recipes r WHERE r.id= "'+req.query.recipeId+'"' ;
     const querySpec = {
