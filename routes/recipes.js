@@ -158,17 +158,10 @@ const addRecipeIntoLiveServer = (recipeFormat, recipeName, ingredients, method, 
 
 router.get('/searchRecipes', async(req, res)=>{
   recipelist.searchRecipes(req, res).then(async(result)=>{
-    if(result.length > 0){
-      res.status(200).json({
-        status:200,
-        data: result
-      })
-    }else{
-      res.status(400).json({
-        status:400,
-        msg: 'no data found'
-      })
-    }
+    res.status(200).json({
+      status:200,
+      data: result
+    })
   })
   .catch(err=>{
     res.json(err)
