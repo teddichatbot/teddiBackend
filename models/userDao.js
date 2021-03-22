@@ -107,7 +107,7 @@ class UserDao {
       },
       auth: {
           user: 'teddi@solutions4health.co.uk',
-          pass: 'We11ted!x'
+          pass: 'Pm55789!bhj3vvQ'
       }
     });
 
