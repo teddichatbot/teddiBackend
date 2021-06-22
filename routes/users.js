@@ -611,12 +611,10 @@ router.post('/sentDailyNotification', async(req,res)=>{
     ]
     let getOneMsg = msgList[Math.floor(Math.random() * msgList.length)];
     for(var i=0; i< dataList.length; i++){
-      var msg = getOneMsg.replace("user name", dataList[i].firstName)
-      // console.log(msg)
+      var msg = getOneMsg.replace("user name", dataList[i].firstName);
       await sendDailyNotificationToEveryUser(msg, dataList[i].fcmToken)
     }
-    // console.log('Sent Daily Notification To Every User')
-    res.status(200).json('Sent Daily Notification To Every User')
+    res.status(200).json('Sent Daily Notification To Every User');
   }catch(e){
     res.json(e)
   }

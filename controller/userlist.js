@@ -119,13 +119,16 @@ const UserDao = require("../models/userDao");
 
   async getAllFcmListForDailyNotification(req, res) {
     const querySpec = {
-      query: "SELECT u.firstName, u.fcmToken FROM users u WHERE u.notificationEnabled=true"
+      query: "SELECT u.firstName, u.fcmToken FROM users u WHERE u.notificationEnabled=true ORDER BY u._ts DESC"
     };
     const items = await this.userDao.find(querySpec);
+    let checkFcmTokenArr = [];
     let filtereddata = items.filter(data=>{
-      return data.fcmToken
+      if(checkFcmTokenArr.indexOf(data.fcmToken) === -1){
+        checkFcmTokenArr.push(data.fcmToken);
+        return data.fcmToken
+      }
     })
-    console.log(filtereddata)
     return filtereddata;
   }
 
