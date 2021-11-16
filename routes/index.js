@@ -13,7 +13,7 @@ router.get('/checkVersion', (req,res)=>{
       forceUpdate: true
     },
     ios: {
-      version: '1.0',
+      version: '1.1',
       storeUrl: 'itms-apps://apps.apple.com/us/app/id1531123323',
       forceUpdate: true
     },
