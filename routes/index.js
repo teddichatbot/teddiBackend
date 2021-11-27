@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
   console.log("Hello");
   res.render('index', { title: 'Express' });
 });
-console.log("subhankar roy1");
+console.log("subhankar roy2");
 router.get('/checkVersion', (req,res)=>{
   let payload = {
     android: {
