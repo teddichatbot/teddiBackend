@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'TeddiBackend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A185DCCBDB5A451E93B8C39C4408CC89 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D86CC4E762A44214B93EDDC367A1CD58 }}
           package: .
