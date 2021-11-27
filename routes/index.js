@@ -6,7 +6,6 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-console.log("subhankar roy4");
 router.get('/checkVersion', (req,res)=>{
   let payload = {
     android: {
