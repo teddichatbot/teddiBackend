@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'teddiNodeApp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B219EB4945A743108C16E8F36FF2E258 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_27E5F516E2C3443C855CD546EC6F31DE }}
           package: .
